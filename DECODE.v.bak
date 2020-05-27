@@ -1,0 +1,20 @@
+module DECODE
+(
+	input [15:0]instr,
+	input FETCH,
+	input EXEC,
+	output R0_count,
+	output R1_en,
+	output R2_en,
+	output R3_en,
+	output R4_en,
+	output R5_en,
+	output R6_en,
+	output R7_en,
+	output [2:0]s1,
+	output [2:0]s2,
+	output [2:0]s3,
+	output s4,
+	output RAMd_wren,
+	output RAMd_en,
+	
