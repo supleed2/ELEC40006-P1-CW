@@ -3,3 +3,4 @@ incremental_db/*
 output_files/*
 simulation/*
 greybox_tmp/cbx_args.txt
+*.vwf
