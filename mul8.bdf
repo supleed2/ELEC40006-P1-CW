@@ -53,6 +53,22 @@ https://fpgasoftware.intel.com/eula.
 	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
 )
 (pin
+	(input)
+	(rect 320 40 488 56)
+	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
+	(text "CLOCK" (rect 5 0 43 12)(font "Arial" ))
+	(pt 168 8)
+	(drawing
+		(line (pt 84 12)(pt 109 12))
+		(line (pt 84 4)(pt 109 4))
+		(line (pt 113 8)(pt 168 8))
+		(line (pt 84 12)(pt 84 4))
+		(line (pt 109 4)(pt 113 8))
+		(line (pt 109 12)(pt 113 8))
+	)
+	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
+)
+(pin
 	(output)
 	(rect 1584 160 1760 176)
 	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
@@ -627,7 +643,7 @@ https://fpgasoftware.intel.com/eula.
 	(annotation_block (parameter)(rect 1128 -8 1322 30))
 )
 (symbol
-	(rect 192 376 344 472)
+	(rect 312 216 464 312)
 	(text "abs" (rect 5 0 26 19)(font "Intel Clear" (font_size 8)))
 	(text "inst1" (rect 8 75 30 92)(font "Intel Clear" ))
 	(port
@@ -649,172 +665,131 @@ https://fpgasoftware.intel.com/eula.
 	)
 )
 (symbol
-	(rect 736 -160 848 -64)
-	(text "LPM_ROM" (rect 25 0 100 16)(font "Arial" (font_size 10)))
-	(text "LUTSum" (rect 3 85 43 102)(font "Intel Clear" ))
+	(rect 688 -48 944 72)
+	(text "LUT" (rect 102 0 129 16)(font "Arial" (font_size 10)))
+	(text "LookupTable" (rect 8 104 70 121)(font "Intel Clear" ))
 	(port
-		(pt 0 24)
+		(pt 0 32)
 		(input)
-		(text "address[LPM_WIDTHAD-1..0]" (rect 20 17 186 31)(font "Arial" (font_size 8)))
-		(text "address[]" (rect 20 17 74 31)(font "Arial" (font_size 8)))
-		(line (pt 0 24)(pt 16 24)(line_width 3))
+		(text "address_a[7..0]" (rect 0 0 89 14)(font "Arial" (font_size 8)))
+		(text "address_a[7..0]" (rect 4 8 93 22)(font "Arial" (font_size 8)))
+		(line (pt 0 32)(pt 112 32)(line_width 3))
 	)
 	(port
-		(pt 0 40)
+		(pt 0 64)
 		(input)
-		(text "inclock" (rect 20 33 58 47)(font "Arial" (font_size 8)))
-		(text "inclock" (rect 20 33 58 47)(font "Arial" (font_size 8)))
-		(line (pt 0 40)(pt 16 40))
-		(unused)
+		(text "address_b[7..0]" (rect 0 0 89 14)(font "Arial" (font_size 8)))
+		(text "address_b[7..0]" (rect 4 40 93 54)(font "Arial" (font_size 8)))
+		(line (pt 0 64)(pt 112 64)(line_width 3))
 	)
 	(port
-		(pt 0 72)
+		(pt 0 96)
 		(input)
-		(text "memenab" (rect 20 65 74 79)(font "Arial" (font_size 8)))
-		(text "memenab" (rect 20 65 74 79)(font "Arial" (font_size 8)))
-		(line (pt 0 72)(pt 16 72))
-		(unused)
+		(text "clock" (rect 0 0 29 14)(font "Arial" (font_size 8)))
+		(text "clock" (rect 4 72 33 86)(font "Arial" (font_size 8)))
+		(line (pt 0 96)(pt 176 96))
 	)
 	(port
-		(pt 0 56)
-		(input)
-		(text "outclock" (rect 20 49 67 63)(font "Arial" (font_size 8)))
-		(text "outclock" (rect 20 49 67 63)(font "Arial" (font_size 8)))
-		(line (pt 0 56)(pt 16 56))
-		(unused)
-	)
-	(port
-		(pt 112 48)
+		(pt 256 32)
 		(output)
-		(text "q[LPM_WIDTH-1..0]" (rect 80 41 188 55)(font "Arial" (font_size 8)))
-		(text "q[]" (rect 80 41 94 55)(font "Arial" (font_size 8)))
-		(line (pt 96 48)(pt 112 48)(line_width 3))
+		(text "q_a[15..0]" (rect 0 0 56 14)(font "Arial" (font_size 8)))
+		(text "q_a[15..0]" (rect 158 8 214 22)(font "Arial" (font_size 8)))
+		(line (pt 256 32)(pt 192 32)(line_width 3))
 	)
-	(parameter
-		"LPM_ADDRESS_CONTROL"
-		"\"UNREGISTERED\""
-		"Should the address and control ports be registered?"
-		"\"REGISTERED\"" "\"UNREGISTERED\"" 
+	(port
+		(pt 256 64)
+		(output)
+		(text "q_b[15..0]" (rect 0 0 56 14)(font "Arial" (font_size 8)))
+		(text "q_b[15..0]" (rect 159 40 215 54)(font "Arial" (font_size 8)))
+		(line (pt 256 64)(pt 192 64)(line_width 3))
 	)
-	(parameter
-		"LPM_FILE"
-		"\"LUTSquares.mif\""
-		"File containing initial contents of memory array"
-		(type "PARAMETER_UNKNOWN")	)
-	(parameter
-		"LPM_NUMWORDS"
-		"256"
-		"Number of memory words, default is 2^LPM_WIDTHAD"
-		(type "PARAMETER_UNSIGNED_DEC")	)
-	(parameter
-		"LPM_OUTDATA"
-		"\"UNREGISTERED\""
-		"Should the output data be registered?"
-		"\"REGISTERED\"" "\"UNREGISTERED\"" 
-	)
-	(parameter
-		"LPM_WIDTH"
-		"16"
-		"Data width in bits, any integer > 0"
-		" 1" " 2" " 3" " 4" " 5" " 6" " 7" " 8" " 9" "10" "11" "12" "13" "14" "15" "16" "20" "24" "28" "32" "40" "48" "56" "64" 
-		(type "PARAMETER_UNSIGNED_DEC")	)
-	(parameter
-		"LPM_WIDTHAD"
-		"8"
-		"Number of address lines, any integer > 0"
-		" 1" " 2" " 3" " 4" " 5" " 6" " 7" " 8" " 9" "10" "11" "12" 
-		(type "PARAMETER_UNSIGNED_DEC")	)
 	(drawing
-		(line (pt 16 16)(pt 96 16))
-		(line (pt 16 80)(pt 96 80))
-		(line (pt 96 80)(pt 96 16))
-		(line (pt 16 80)(pt 16 16))
+		(text "256 Word(s)" (rect 127 -1 139 59)(font "Arial" )(vertical))
+		(text "RAM" (rect 148 -22 160 1)(font "Arial" )(vertical))
+		(text "Block Type: AUTO" (rect 40 99 132 111)(font "Arial" ))
+		(line (pt 128 24)(pt 168 24))
+		(line (pt 168 24)(pt 168 80))
+		(line (pt 168 80)(pt 128 80))
+		(line (pt 128 80)(pt 128 24))
+		(line (pt 112 27)(pt 120 27))
+		(line (pt 120 27)(pt 120 39))
+		(line (pt 120 39)(pt 112 39))
+		(line (pt 112 39)(pt 112 27))
+		(line (pt 112 34)(pt 114 36))
+		(line (pt 114 36)(pt 112 38))
+		(line (pt 104 36)(pt 112 36))
+		(line (pt 120 32)(pt 128 32)(line_width 3))
+		(line (pt 112 59)(pt 120 59))
+		(line (pt 120 59)(pt 120 71))
+		(line (pt 120 71)(pt 112 71))
+		(line (pt 112 71)(pt 112 59))
+		(line (pt 112 66)(pt 114 68))
+		(line (pt 114 68)(pt 112 70))
+		(line (pt 104 68)(pt 112 68))
+		(line (pt 120 64)(pt 128 64)(line_width 3))
+		(line (pt 104 36)(pt 104 97))
+		(line (pt 176 36)(pt 176 97))
+		(line (pt 184 27)(pt 192 27))
+		(line (pt 192 27)(pt 192 39))
+		(line (pt 192 39)(pt 184 39))
+		(line (pt 184 39)(pt 184 27))
+		(line (pt 184 34)(pt 186 36))
+		(line (pt 186 36)(pt 184 38))
+		(line (pt 176 36)(pt 184 36))
+		(line (pt 168 32)(pt 184 32)(line_width 3))
+		(line (pt 184 59)(pt 192 59))
+		(line (pt 192 59)(pt 192 71))
+		(line (pt 192 71)(pt 184 71))
+		(line (pt 184 71)(pt 184 59))
+		(line (pt 184 66)(pt 186 68))
+		(line (pt 186 68)(pt 184 70))
+		(line (pt 176 68)(pt 184 68))
+		(line (pt 168 64)(pt 184 64)(line_width 3))
+		(line (pt 0 0)(pt 257 0))
+		(line (pt 257 0)(pt 257 122))
+		(line (pt 0 122)(pt 257 122))
+		(line (pt 0 0)(pt 0 122))
+		(line (pt 0 0)(pt 0 0))
+		(line (pt 0 0)(pt 0 0))
+		(line (pt 0 0)(pt 0 0))
+		(line (pt 0 0)(pt 0 0))
 	)
-	(annotation_block (parameter)(rect 848 -296 1178 -163))
 )
 (symbol
-	(rect 760 16 872 112)
-	(text "LPM_ROM" (rect 25 0 100 16)(font "Arial" (font_size 10)))
-	(text "LUTDifference" (rect 3 85 70 102)(font "Intel Clear" ))
+	(rect 360 440 520 552)
+	(text "min" (rect 5 0 22 12)(font "Arial" ))
+	(text "inst4" (rect 8 96 30 113)(font "Intel Clear" ))
 	(port
-		(pt 0 24)
+		(pt 0 32)
 		(input)
-		(text "address[LPM_WIDTHAD-1..0]" (rect 20 17 186 31)(font "Arial" (font_size 8)))
-		(text "address[]" (rect 20 17 74 31)(font "Arial" (font_size 8)))
-		(line (pt 0 24)(pt 16 24)(line_width 3))
+		(text "sign" (rect 0 0 20 12)(font "Arial" ))
+		(text "sign" (rect 21 27 41 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32))
 	)
 	(port
-		(pt 0 40)
+		(pt 0 48)
 		(input)
-		(text "inclock" (rect 20 33 58 47)(font "Arial" (font_size 8)))
-		(text "inclock" (rect 20 33 58 47)(font "Arial" (font_size 8)))
-		(line (pt 0 40)(pt 16 40))
-		(unused)
+		(text "a[7..0]" (rect 0 0 31 12)(font "Arial" ))
+		(text "a[7..0]" (rect 21 43 52 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 3))
 	)
 	(port
-		(pt 0 72)
+		(pt 0 64)
 		(input)
-		(text "memenab" (rect 20 65 74 79)(font "Arial" (font_size 8)))
-		(text "memenab" (rect 20 65 74 79)(font "Arial" (font_size 8)))
-		(line (pt 0 72)(pt 16 72))
-		(unused)
+		(text "b[7..0]" (rect 0 0 31 12)(font "Arial" ))
+		(text "b[7..0]" (rect 21 59 52 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
 	)
 	(port
-		(pt 0 56)
-		(input)
-		(text "outclock" (rect 20 49 67 63)(font "Arial" (font_size 8)))
-		(text "outclock" (rect 20 49 67 63)(font "Arial" (font_size 8)))
-		(line (pt 0 56)(pt 16 56))
-		(unused)
-	)
-	(port
-		(pt 112 48)
+		(pt 160 32)
 		(output)
-		(text "q[LPM_WIDTH-1..0]" (rect 80 41 188 55)(font "Arial" (font_size 8)))
-		(text "q[]" (rect 80 41 94 55)(font "Arial" (font_size 8)))
-		(line (pt 96 48)(pt 112 48)(line_width 3))
+		(text "num[7..0]" (rect 0 0 47 12)(font "Arial" ))
+		(text "num[7..0]" (rect 100 27 147 39)(font "Arial" ))
+		(line (pt 160 32)(pt 144 32)(line_width 3))
 	)
-	(parameter
-		"LPM_ADDRESS_CONTROL"
-		"\"UNREGISTERED\""
-		"Should the address and control ports be registered?"
-		"\"REGISTERED\"" "\"UNREGISTERED\"" 
-	)
-	(parameter
-		"LPM_FILE"
-		"\"LUTSquares.mif\""
-		"File containing initial contents of memory array"
-		(type "PARAMETER_UNKNOWN")	)
-	(parameter
-		"LPM_NUMWORDS"
-		"256"
-		"Number of memory words, default is 2^LPM_WIDTHAD"
-		(type "PARAMETER_UNSIGNED_DEC")	)
-	(parameter
-		"LPM_OUTDATA"
-		"\"UNREGISTERED\""
-		"Should the output data be registered?"
-		"\"REGISTERED\"" "\"UNREGISTERED\"" 
-	)
-	(parameter
-		"LPM_WIDTH"
-		"16"
-		"Data width in bits, any integer > 0"
-		" 1" " 2" " 3" " 4" " 5" " 6" " 7" " 8" " 9" "10" "11" "12" "13" "14" "15" "16" "20" "24" "28" "32" "40" "48" "56" "64" 
-		(type "PARAMETER_UNSIGNED_DEC")	)
-	(parameter
-		"LPM_WIDTHAD"
-		"8"
-		"Number of address lines, any integer > 0"
-		" 1" " 2" " 3" " 4" " 5" " 6" " 7" " 8" " 9" "10" "11" "12" 
-		(type "PARAMETER_UNSIGNED_DEC")	)
 	(drawing
-		(line (pt 16 16)(pt 96 16))
-		(line (pt 16 80)(pt 96 80))
-		(line (pt 96 80)(pt 96 16))
-		(line (pt 16 80)(pt 16 16))
+		(rectangle (rect 16 16 144 96))
 	)
-	(annotation_block (parameter)(rect 872 -120 1202 13))
 )
 (connector
 	(text "1" (rect -94 -64 -89 -47)(font "Intel Clear" ))
@@ -943,12 +918,6 @@ https://fpgasoftware.intel.com/eula.
 	(bus)
 )
 (connector
-	(text "0,0,0,0,0,0,0,0,EXTRA[7..0]" (rect 1144 232 1266 249)(font "Intel Clear" ))
-	(pt 1224 248)
-	(pt 1144 248)
-	(bus)
-)
-(connector
 	(text "A[0]" (rect 698 536 718 553)(font "Intel Clear" ))
 	(pt 720 552)
 	(pt 688 552)
@@ -973,59 +942,91 @@ https://fpgasoftware.intel.com/eula.
 	(bus)
 )
 (connector
-	(text "B[7..0]" (rect 738 456 768 473)(font "Intel Clear" ))
-	(pt 728 472)
-	(pt 800 472)
-	(bus)
-)
-(connector
 	(text "0,0,0,0,0,0,0,0" (rect 730 424 793 441)(font "Intel Clear" ))
 	(pt 800 440)
 	(pt 728 440)
 	(bus)
 )
 (connector
-	(text "<<__$DEF_ALIAS8980>>" (rect 96 392 214 409)(font "Intel Clear" )(invisible))
-	(pt 96 408)
-	(pt 192 408)
+	(text "0,S[7..1]" (rect 530 -40 567 -23)(font "Intel Clear" ))
+	(pt 520 -16)
+	(pt 688 -16)
 	(bus)
 )
 (connector
-	(text "D[7..0]" (rect 354 392 384 409)(font "Intel Clear" ))
-	(pt 344 408)
-	(pt 392 408)
+	(pt 976 16)
+	(pt 976 152)
 	(bus)
 )
 (connector
-	(text "0,S[7..1]" (rect 578 -160 615 -143)(font "Intel Clear" ))
-	(pt 568 -136)
-	(pt 736 -136)
+	(pt 944 16)
+	(pt 976 16)
+	(bus)
+)
+(connector
+	(pt 944 -16)
+	(pt 992 -16)
 	(bus)
 )
 (connector
 	(pt 992 104)
-	(pt 992 -112)
+	(pt 992 -16)
 	(bus)
 )
 (connector
-	(pt 992 -112)
-	(pt 848 -112)
+	(text "0,D[7..1]" (rect 538 0 576 17)(font "Intel Clear" ))
+	(pt 528 16)
+	(pt 688 16)
 	(bus)
 )
 (connector
-	(pt 976 152)
-	(pt 976 64)
+	(pt 688 48)
+	(pt 488 48)
+)
+(connector
+	(text "0,0,0,0,0,0,0,0,EXTRA[7..0]" (rect 1144 232 1266 249)(font "Intel Clear" ))
+	(pt 1224 248)
+	(pt 1144 248)
 	(bus)
 )
 (connector
-	(pt 976 64)
-	(pt 872 64)
+	(text "DIFF[7..0]" (rect 106 392 150 409)(font "Intel Clear" ))
+	(pt 96 408)
+	(pt 152 408)
 	(bus)
 )
 (connector
-	(text "0,D[7..1]" (rect 610 24 648 41)(font "Intel Clear" ))
-	(pt 600 40)
-	(pt 760 40)
+	(text "D[7..0]" (rect 474 232 504 249)(font "Intel Clear" ))
+	(pt 464 248)
+	(pt 512 248)
+	(bus)
+)
+(connector
+	(text "DIFF[7..0]" (rect 282 232 326 249)(font "Intel Clear" ))
+	(pt 312 248)
+	(pt 272 248)
+	(bus)
+)
+(connector
+	(pt 520 472)
+	(pt 800 472)
+	(bus)
+)
+(connector
+	(text "DIFF[7]" (rect 298 456 332 473)(font "Intel Clear" ))
+	(pt 360 472)
+	(pt 288 472)
+)
+(connector
+	(text "A[7..0]" (rect 298 472 328 489)(font "Intel Clear" ))
+	(pt 360 488)
+	(pt 288 488)
+	(bus)
+)
+(connector
+	(text "B[7..0]" (rect 298 488 328 505)(font "Intel Clear" ))
+	(pt 360 504)
+	(pt 288 504)
 	(bus)
 )
 (junction (pt -200 160))

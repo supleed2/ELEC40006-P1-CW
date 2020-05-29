@@ -1,0 +1,12 @@
+module MIN(
+	input sign,
+	input a[7..0],
+	input b[7..0],
+	output [7..0] num;
+);
+
+assign num = sign ? a[7..0]:b[7..0]
+
+
+
+endmodule
