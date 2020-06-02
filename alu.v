@@ -36,76 +36,83 @@ assign JC8 = (Rs1 < 0);
 
 always @(*)
 	begin
-		case (opcode)
-			6'b000000: alusum = {1'b1, Rd}; // JMP Unconditional Jump, first bit high to indicate jump and passes through Rd
-			
-			6'b000100: alusum = {JC1, Rd}; // JC1 Conditional Jump A < B
-			6'b000101: alusum = {JC2, Rd}; // JC2 Conditional Jump A > B
-			6'b000110: alusum = {JC3, Rd}; // JC3 Conditional Jump A = B
-			6'b000111: alusum = {JC4, Rd}; // JC4 Conditional Jump A = 0
-			
-			6'b001000: alusum = {JC5, Rd}; // JC5 Conditional Jump A >= B / A !< B
-			6'b001001: alusum = {JC6, Rd}; // JC6 Conditional Jump A <= B / A !> B
-			6'b001010: alusum = {JC7, Rd}; // JC7 Conditional Jump A != B
-			6'b001011: alusum = {JC8, Rd}; // JC8 Conditional Jump A < 0
-			
-			6'b001100: alusum = {1'b0, Rs1 & Rs2}; // AND Bitwise AND
-			6'b001101: alusum = {1'b0, Rs1 | Rs2}; // OR Bitwise OR
-			6'b001110: alusum = {1'b0, Rs1 ^ Rs2}; // XOR Bitwise XOR
-			6'b001111: alusum = {1'b0, ~Rs1}; // NOT Bitwise NOT
-			
-			6'b010000: alusum = {1'b0, ~Rs1 | ~Rs2}; // NND Bitwise NAND
-			6'b010001: alusum = {1'b0, ~Rs1 & ~Rs2}; // NOR Bitwise NOR
-			6'b010010: alusum = {1'b0, Rs1 ~^ Rs2}; // XNR Bitwise XNOR
-			6'b010011: alusum = {1'b0, Rs1}; // MOV Move (Rd = Rs1)
-			
-			6'b010100: alusum = {1'b0, Rs1} + {1'b0, Rs2}; // ADD Add (Rd = Rs1 + Rs2)
-			6'b010101: alusum = {1'b0, Rs1} + {1'b0, Rs2} + carryin; // ADC Add w/ Carry (Rd = Rs1 + Rs2 + C)
-			6'b010110: alusum = {1'b0, Rs1} + {17'b00000000000000001}; // ADO Add 1 (Rd = Rd + 1)
-			6'b010111: ;
-			
-			6'b011000: alusum = {1'b0, Rs1} - {1'b0, Rs2}; // SUB Subtract (Rd = Rs1 - Rs2)
-			6'b011001: alusum = {1'b0, Rs1} - {1'b0, Rs2} + carryin - {17'b00000000000000001}; // SBC Subtract w/ Carry (Rd = Rs1 - Rs2 + C - 1)
-			6'b011010: alusum = {1'b0, Rs1} - {17'b00000000000000001}; // SBO Subtract 1 (Rd = Rd - 1)
-			6'b011011: ;
-			
-			6'b011100: // MUL Multiply (Rd = Rs1 * Rs2)
-				begin
-//					mul1 = Rs1;
-//					mul2 = Rs2;
-					alusum[16] = 1'b0;
-					{mulextra, alusum[15:0]} = Rs1 * Rs2;
-				end
-			6'b011101: // MLA Multiply and Add  (Rd = Rs2 + (Rd * Rs1))
-				begin
-//					mul1 = Rs1;
-//					mul2 = Rs2;
-					alusum[16] = 1'b0;
-					{mulextra, alusum[15:0]} = (Rd * Rs1) + Rs2;
-				end
-			6'b011110: // MLS Multiply and Subtract (Rd = Rs2 - (Rd * Rs1)[15:0])
-				begin
-//					mul1 = Rs1;
-//					mul2 = Rs2;
-					alusum = {1'b0, Rs2 - (Rd * Rs1)};
-				end
-			6'b011111: alusum = mulextra; // MRT Retrieve Multiply MSBs (Rd = MSBs)
-			
-			6'b100000: alusum = {1'b0, Rs1 << Rs2}; // LSL Logical Shift Left (Rd = Rs1 shifted left by value of Rs2)
-			6'b100001: alusum = {1'b0, Rs1 >> Rs2}; // LSR Logical Shift Right (Rd = Rs1 shifted right by value of Rs2)
-			6'b100010: alusum = {Rs1[15], Rs1 >>> Rs2}; // ASR Arithmetic Shift Right (Rd = Rs1 shifted right by value of Rs2, maintaining sign bit)
-			6'b100011: ;
-			
-			6'b100100: alusum = {1'b0, (Rs1 >> Rs2[3:0]) | (Rs1 << (16 - Rs2[3:0]))}; // ROR Shift Right Loop (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Rs1[15])
-			6'b100101: alusum = ({Rs1, carryin} >> Rs2[3:0]) | ({Rs1, carryin} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
-			6'b100110: ;
-			6'b100111: ;
-			
-			6'b111110: ; // NOP No Operation (Do Nothing for a cycle)
-			6'b111111: ; // STP Stop (Program Ends)
-			
-			default: ; // During Load & Store as well as undefined opcodes
-		endcase;
+		if(!enable)
+			begin
+			case (opcode)
+				6'b000000: alusum = {1'b1, Rd}; // JMP Unconditional Jump, first bit high to indicate jump and passes through Rd
+				
+				6'b000100: alusum = {JC1, Rd}; // JC1 Conditional Jump A < B
+				6'b000101: alusum = {JC2, Rd}; // JC2 Conditional Jump A > B
+				6'b000110: alusum = {JC3, Rd}; // JC3 Conditional Jump A = B
+				6'b000111: alusum = {JC4, Rd}; // JC4 Conditional Jump A = 0
+				
+				6'b001000: alusum = {JC5, Rd}; // JC5 Conditional Jump A >= B / A !< B
+				6'b001001: alusum = {JC6, Rd}; // JC6 Conditional Jump A <= B / A !> B
+				6'b001010: alusum = {JC7, Rd}; // JC7 Conditional Jump A != B
+				6'b001011: alusum = {JC8, Rd}; // JC8 Conditional Jump A < 0
+				
+				6'b001100: alusum = {1'b0, Rs1 & Rs2}; // AND Bitwise AND
+				6'b001101: alusum = {1'b0, Rs1 | Rs2}; // OR Bitwise OR
+				6'b001110: alusum = {1'b0, Rs1 ^ Rs2}; // XOR Bitwise XOR
+				6'b001111: alusum = {1'b0, ~Rs1}; // NOT Bitwise NOT
+				
+				6'b010000: alusum = {1'b0, ~Rs1 | ~Rs2}; // NND Bitwise NAND
+				6'b010001: alusum = {1'b0, ~Rs1 & ~Rs2}; // NOR Bitwise NOR
+				6'b010010: alusum = {1'b0, Rs1 ~^ Rs2}; // XNR Bitwise XNOR
+				6'b010011: alusum = {1'b0, Rs1}; // MOV Move (Rd = Rs1)
+				
+				6'b010100: alusum = {1'b0, Rs1} + {1'b0, Rs2}; // ADD Add (Rd = Rs1 + Rs2)
+				6'b010101: alusum = {1'b0, Rs1} + {1'b0, Rs2} + carryin; // ADC Add w/ Carry (Rd = Rs1 + Rs2 + C)
+				6'b010110: alusum = {1'b0, Rs1} + {17'b00000000000000001}; // ADO Add 1 (Rd = Rd + 1)
+				6'b010111: ;
+				
+				6'b011000: alusum = {1'b0, Rs1} - {1'b0, Rs2}; // SUB Subtract (Rd = Rs1 - Rs2)
+				6'b011001: alusum = {1'b0, Rs1} - {1'b0, Rs2} + carryin - {17'b00000000000000001}; // SBC Subtract w/ Carry (Rd = Rs1 - Rs2 + C - 1)
+				6'b011010: alusum = {1'b0, Rs1} - {17'b00000000000000001}; // SBO Subtract 1 (Rd = Rd - 1)
+				6'b011011: ;
+				
+				6'b011100: // MUL Multiply (Rd = Rs1 * Rs2)
+					begin
+//						mul1 = Rs1;
+//						mul2 = Rs2;
+						alusum[16] = 1'b0;
+						{mulextra, alusum[15:0]} = Rs1 * Rs2;
+					end
+				6'b011101: // MLA Multiply and Add  (Rd = Rs2 + (Rd * Rs1))
+					begin
+//						mul1 = Rs1;
+//						mul2 = Rs2;
+						alusum[16] = 1'b0;
+						{mulextra, alusum[15:0]} = (Rd * Rs1) + Rs2;
+					end
+				6'b011110: // MLS Multiply and Subtract (Rd = Rs2 - (Rd * Rs1)[15:0])
+					begin
+//						mul1 = Rs1;
+//						mul2 = Rs2;
+						alusum = {1'b0, Rs2 - (Rd * Rs1)};
+					end
+				6'b011111: alusum = mulextra; // MRT Retrieve Multiply MSBs (Rd = MSBs)
+				
+				6'b100000: alusum = {1'b0, Rs1 << Rs2}; // LSL Logical Shift Left (Rd = Rs1 shifted left by value of Rs2)
+				6'b100001: alusum = {1'b0, Rs1 >> Rs2}; // LSR Logical Shift Right (Rd = Rs1 shifted right by value of Rs2)
+				6'b100010: alusum = {Rs1[15], Rs1 >>> Rs2}; // ASR Arithmetic Shift Right (Rd = Rs1 shifted right by value of Rs2, maintaining sign bit)
+				6'b100011: ;
+				
+				6'b100100: alusum = {1'b0, (Rs1 >> Rs2[3:0]) | (Rs1 << (16 - Rs2[3:0]))}; // ROR Shift Right Loop (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Rs1[15])
+				6'b100101: alusum = ({Rs1, carryin} >> (Rs2 % 17)) | ({Rs1, carryin} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
+				6'b100110: ;
+				6'b100111: ;
+				
+				6'b111110: ; // NOP No Operation (Do Nothing for a cycle)
+				6'b111111: ; // STP Stop (Program Ends)
+				
+				default: ; // During Load & Store as well as undefined opcodes
+			endcase;
+			end
+		else
+			begin
+				alusum = {1'b0, 16'h0000}; // Bring output low during Load/Store so it does not interfere
+			end
 	end
 
 /*	
