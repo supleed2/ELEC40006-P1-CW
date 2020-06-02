@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 224 320)
+	(rect 16 16 224 352)
 	(text "DECODE" (rect 5 0 47 12)(font "Arial" ))
-	(text "inst" (rect 8 288 20 300)(font "Arial" ))
+	(text "inst" (rect 8 320 20 332)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -33,16 +33,23 @@ refer to the applicable agreement for further details.
 	(port
 		(pt 0 48)
 		(input)
-		(text "EXEC" (rect 0 0 27 12)(font "Arial" ))
-		(text "EXEC" (rect 21 43 48 55)(font "Arial" ))
+		(text "EXEC1" (rect 0 0 30 12)(font "Arial" ))
+		(text "EXEC1" (rect 21 43 51 55)(font "Arial" ))
 		(line (pt 0 48)(pt 16 48)(line_width 1))
 	)
 	(port
 		(pt 0 64)
 		(input)
-		(text "COND_result" (rect 0 0 55 12)(font "Arial" ))
-		(text "COND_result" (rect 21 59 76 71)(font "Arial" ))
+		(text "EXEC2" (rect 0 0 31 12)(font "Arial" ))
+		(text "EXEC2" (rect 21 59 52 71)(font "Arial" ))
 		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "COND_result" (rect 0 0 55 12)(font "Arial" ))
+		(text "COND_result" (rect 21 75 76 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 1))
 	)
 	(port
 		(pt 208 32)
@@ -156,7 +163,21 @@ refer to the applicable agreement for further details.
 		(text "RAMi_en" (rect 146 267 187 279)(font "Arial" ))
 		(line (pt 208 272)(pt 192 272)(line_width 1))
 	)
+	(port
+		(pt 208 288)
+		(output)
+		(text "ALU_en" (rect 0 0 36 12)(font "Arial" ))
+		(text "ALU_en" (rect 151 283 187 295)(font "Arial" ))
+		(line (pt 208 288)(pt 192 288)(line_width 1))
+	)
+	(port
+		(pt 208 304)
+		(output)
+		(text "E2" (rect 0 0 11 12)(font "Arial" ))
+		(text "E2" (rect 176 299 187 311)(font "Arial" ))
+		(line (pt 208 304)(pt 192 304)(line_width 1))
+	)
 	(drawing
-		(rectangle (rect 16 16 192 288)(line_width 1))
+		(rectangle (rect 16 16 192 320)(line_width 1))
 	)
 )
