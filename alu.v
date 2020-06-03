@@ -1,4 +1,4 @@
-module alu (enable, Rd, Rs1, Rs2, opcode, carryin, mulresult, carryout, mul1, mul2, Rout, jump);
+module alu (enable, Rd, Rs1, Rs2, opcode, carryin, mulresult, exec2, carryout, mul1, mul2, Rout, jump);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rd; // input destination register
@@ -7,6 +7,7 @@ input signed [15:0] Rs2; // input source register 2
 input [5:0] opcode; // opcode is fed in from instruction using wires outside ALU
 input carryin; // current status of carry flip-flop
 input signed [31:0] mulresult; // 32-bit result from multiplier
+input exec2; // Input from state machine to indicate when to take in result from multiplication
 
 output carryout; // resulting carry from operation, updated each cycle
 output reg signed [15:0] mul1; // first number to be multiplied
@@ -21,7 +22,6 @@ assign Rout = alusum [15:0];
 assign carryout = alusum [16];
 assign jump = (alusum[16] && ((opcode[5:2] == 4'b0000) | (opcode[5:2] == 4'b0001) | (opcode[5:2] == 4'b0010)));
 reg [15:0] mulextra;
-reg signed [31:0] mlaresult;
 
 //Jump Conditionals:
 wire JC1, JC2, JC3, JC4, JC5, JC6, JC7, JC8;
@@ -73,23 +73,41 @@ always @(*)
 				
 				6'b011100: // MUL Multiply (Rd = Rs1 * Rs2)
 					begin
-//						mul1 = Rs1;
-//						mul2 = Rs2;
-						alusum[16] = 1'b0;
-						{mulextra, alusum[15:0]} = Rs1 * Rs2;
+						if(!exec2)
+							begin
+								mul1 = Rs1;
+								mul2 = Rs2;
+							end
+						else
+							begin
+								alusum[16] = 1'b0;
+								{mulextra, alusum[15:0]} = mulresult;
+							end
 					end
 				6'b011101: // MLA Multiply and Add  (Rd = Rs2 + (Rd * Rs1))
 					begin
-//						mul1 = Rs1;
-//						mul2 = Rs2;
-						alusum[16] = 1'b0;
-						{mulextra, alusum[15:0]} = (Rd * Rs1) + Rs2;
+						if(!exec2)
+							begin
+								mul1 = Rs1;
+								mul2 = Rs2;
+							end
+						else
+							begin
+								alusum[16] = 1'b0;
+								{mulextra, alusum[15:0]} = mulresult + {16'h0000, Rs2};
+							end
 					end
 				6'b011110: // MLS Multiply and Subtract (Rd = Rs2 - (Rd * Rs1)[15:0])
 					begin
-//						mul1 = Rs1;
-//						mul2 = Rs2;
-						alusum = {1'b0, Rs2 - (Rd * Rs1)};
+						if(!exec2)
+							begin
+								mul1 = Rs1;
+								mul2 = Rs2;
+							end
+						else
+							begin
+								alusum = {1'b0, Rs2 - mulresult[15:0]};
+							end
 					end
 				6'b011111: alusum = mulextra; // MRT Retrieve Multiply MSBs (Rd = MSBs)
 				
@@ -104,7 +122,7 @@ always @(*)
 				6'b100111: ;
 				
 				6'b111110: ; // NOP No Operation (Do Nothing for a cycle)
-				6'b111111: ; // STP Stop (Program Ends)
+				6'b111111: alusum = {1'b0, 16'h0000}; // STP Stop (Program Ends)
 				
 				default: ; // During Load & Store as well as undefined opcodes
 			endcase;
@@ -114,29 +132,5 @@ always @(*)
 				alusum = {1'b0, 16'h0000}; // Bring output low during Load/Store so it does not interfere
 			end
 	end
-
-/*	
-always @(*)
-	begin
-		case (opcode)
-			6'b011100:
-				begin
-					alusum = {1'b0, mulresult[15:0]};
-					mulextra = mulresult[31:16];
-				end
-			6'b011101:
-				begin
-					mlaresult = mulresult + {16'h0000, Rs2};
-					alusum = {1'b0, mlaresult[15:0]};
-					mulextra = mlaresult[31:16];
-				end
-			6'b011110:
-				begin
-					alusum = {1'b0, Rs2 - mulresult[15:0]};
-				end
-			default: ;
-		endcase
-	end
-*/
 
 endmodule
