@@ -1,4 +1,4 @@
-module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, mul1, mul2, Rout, jump, carry);
+module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, mul1, mul2, Rout, jump, carry);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rd; // input destination register
@@ -7,6 +7,7 @@ input signed [15:0] Rs2; // input source register 2
 input [5:0] opcode; // opcode is fed in from instruction using wires outside ALU
 input signed [31:0] mulresult; // 32-bit result from multiplier
 input exec2; // Input from state machine to indicate when to take in result from multiplication
+input [15:0] stackout; // input from stack to be fed back to registers
 
 output reg signed [15:0] mul1; // first number to be multiplied
 output reg signed [15:0] mul2; // second number to be multiplied
@@ -124,6 +125,11 @@ always @(*)
 				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
 				6'b100110: ;
 				6'b100111: ;
+				
+				6'b101000: alusum = {1'b0, Rs1}; // PSH Push value to stack (Stack = Rs1)
+				6'b101001: alusum = {1'b0, stackout}; // POP Pop value from stack (Rd = Stack)
+				6'b101010: ;
+				6'b101011: ;
 				
 				6'b111110: ; // NOP No Operation (Do Nothing for a cycle)
 				6'b111111: alusum = {1'b0, 16'h0000}; // STP Stop (Program Ends)
