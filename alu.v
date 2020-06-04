@@ -1,4 +1,4 @@
-module alu (enable, Rd, Rs1, Rs2, opcode, mulresult, exec2, mul1, mul2, Rout, jump, carry);
+module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, mul1, mul2, Rout, jump, carry);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rd; // input destination register
@@ -76,7 +76,7 @@ always @(*)
 					end
 				6'b011001: begin
 						alusum = {1'b0, Rs1} - {1'b0, Rs2} + carry - {17'b00000000000000001}; // SBC Subtract w/ Carry (Rd = Rs1 - Rs2 + C - 1)
-						carry = slusum[16];
+						carry = alusum[16];
 					end
 				6'b011010: begin
 						alusum = {1'b0, Rs1} - {17'b00000000000000001}; // SBO Subtract 1 (Rd = Rd - 1)
