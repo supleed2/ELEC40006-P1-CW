@@ -2,6 +2,7 @@ module SM
 (
 	input CLK,
 	input E2,
+	input RST,
 	output FETCH,
 	output EXEC1,
 	output EXEC2
@@ -11,9 +12,9 @@ reg [2:0]s = 3'b1; //current state initialised to 001
 
 always @(posedge CLK) //Change on rising edge of clock
 	begin
-	s[2] <= ~s[2] & s[1] & ~s[0] & E2;
-	s[1] <= ~s[2] & ~s[1] & s[0];
-	s[0] <= (~s[2] & s[1] & ~s[0] & ~E2) | (s[2] & ~s[1] & ~s[0]);
+	s[2] <= ~s[2] & s[1] & ~s[0] & E2 & ~RST;
+	s[1] <= ~s[2] & ~s[1] & s[0] & ~RST;
+	s[0] <= (~s[2] & s[1] & ~s[0] & ~E2) | (s[2] & ~s[1] & ~s[0]) | RST;
 	end
 
 	assign FETCH = s[0];

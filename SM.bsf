@@ -38,6 +38,13 @@ refer to the applicable agreement for further details.
 		(line (pt 0 48)(pt 16 48)(line_width 1))
 	)
 	(port
+		(pt 0 64)
+		(input)
+		(text "RST" (rect 0 0 20 12)(font "Arial" ))
+		(text "RST" (rect 21 59 41 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
 		(pt 152 32)
 		(output)
 		(text "FETCH" (rect 0 0 33 12)(font "Arial" ))

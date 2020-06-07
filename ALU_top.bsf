@@ -66,6 +66,13 @@ refer to the applicable agreement for further details.
 		(line (pt 0 112)(pt 16 112))
 	)
 	(port
+		(pt 0 128)
+		(input)
+		(text "CLK" (rect 0 0 23 19)(font "Intel Clear" (font_size 8)))
+		(text "CLK" (rect 21 123 44 142)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 128)(pt 16 128))
+	)
+	(port
 		(pt 184 32)
 		(output)
 		(text "Rout[15..0]" (rect 0 0 66 19)(font "Intel Clear" (font_size 8)))

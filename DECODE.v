@@ -1,6 +1,7 @@
 module DECODE
 (
 	input [15:0] instr,
+	input FETCH,
 	input EXEC1,
 	input EXEC2,
 	input COND_result,
@@ -16,7 +17,7 @@ module DECODE
 	output [2:0] s1,
 	output [2:0] s2,
 	output [2:0] s3,
-	output s4,
+	output [1:0]s4,
 	output RAMd_wren,
 	output RAMd_en,
 	output RAMi_en,
@@ -39,25 +40,25 @@ module DECODE
 	//Different opcodes (refer to documentation):
 	wire LOAD = msb & ~ls;
 	wire STORE = msb & ls;
-	wire UJMP = ~op[5] & ~op[4] & ~op[3] & ~op[2];
-	wire JMP = (~op[5] & ~op[4] & ~op[3] & op[2]) | (~op[5] & ~op[4] & op[3] & ~op[2]);
-	wire MUL = ~op[5] &  op[4] &  op[3] &  op[2] & ~op[1] & ~op[0];
-	wire MLA = ~op[5] &  op[4] &  op[3] &  op[2] & ~op[1] &  op[0];
-	wire MLS = ~op[5] &  op[4] &  op[3] &  op[2] &  op[1] & ~op[0];
-	wire PSH =  op[5] & ~op[4] &  op[3] & ~op[2] & ~op[1] & ~op[0];
-	wire POP =  op[5] & ~op[4] &  op[3] & ~op[2] & ~op[1] &  op[0];
-	wire NOP =  op[5] &  op[4] &  op[3] &  op[2] &  op[1] & ~op[0];
-	wire STP =  op[5] &  op[4] &  op[3] &  op[2] &  op[1] &  op[0];
+	wire UJMP = ~msb & ~op[5] & ~op[4] & ~op[3] & ~op[2];
+	wire JMP = ~msb & (~op[5] & ~op[4] & ~op[3] & op[2]) | (~op[5] & ~op[4] & op[3] & ~op[2]);
+	wire MUL = ~msb & ~op[5] &  op[4] &  op[3] &  op[2] & ~op[1] & ~op[0];
+	wire MLA = ~msb & ~op[5] &  op[4] &  op[3] &  op[2] & ~op[1] &  op[0];
+	wire MLS = ~msb & ~op[5] &  op[4] &  op[3] &  op[2] &  op[1] & ~op[0];
+	wire PSH = ~msb &  op[5] & ~op[4] &  op[3] & ~op[2] & ~op[1] & ~op[0];
+	wire POP = ~msb &  op[5] & ~op[4] &  op[3] & ~op[2] & ~op[1] &  op[0];
+	wire NOP = ~msb &  op[5] &  op[4] &  op[3] &  op[2] &  op[1] & ~op[0];
+	wire STP = ~msb &  op[5] &  op[4] &  op[3] &  op[2] &  op[1] &  op[0];
 	
-	assign R0_count = EXEC1 & (~(UJMP | JMP | STP));
-	assign R0_en = EXEC1 & (~(STORE | NOP | STP) & ~Rd[2] & ~Rd[1] & ~Rd[0] | UJMP | JMP & COND_result) | EXEC2 & LOAD & ~Rls[2] & ~Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] & ~Rd[0];
-	assign R1_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] & ~Rd[1] &  Rd[0] | EXEC2 & LOAD & ~Rls[2] & ~Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] &  Rd[0];
-	assign R2_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] &  Rd[1] & ~Rd[0] | EXEC2 & LOAD & ~Rls[2] &  Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] & ~Rd[0];
-	assign R3_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] &  Rd[1] &  Rd[0] | EXEC2 & LOAD & ~Rls[2] &  Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] &  Rd[0];
-	assign R4_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] & ~Rd[1] & ~Rd[0] | EXEC2 & LOAD &  Rls[2] & ~Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] & ~Rd[0];
-	assign R5_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] & ~Rd[1] &  Rd[0] | EXEC2 & LOAD &  Rls[2] & ~Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] &  Rd[0];
-	assign R6_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] &  Rd[1] & ~Rd[0] | EXEC2 & LOAD &  Rls[2] &  Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] & ~Rd[0];
-	assign R7_en = EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] &  Rd[1] &  Rd[0] | EXEC2 & LOAD &  Rls[2] &  Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] &  Rd[0];
+	assign R0_count = EXEC1 & (~(UJMP | JMP & ~COND_result | STP));
+	assign R0_en = EXEC1 & (~(STORE | NOP | STP | LOAD) & ~Rd[2] & ~Rd[1] & ~Rd[0] | UJMP | JMP & COND_result) | EXEC2 & LOAD & ~Rls[2] & ~Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] & ~Rd[0];
+	assign R1_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] & ~Rd[1] &  Rd[0] | EXEC2 & LOAD & ~Rls[2] & ~Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] &  Rd[0];
+	assign R2_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] &  Rd[1] & ~Rd[0] | EXEC2 & LOAD & ~Rls[2] &  Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] & ~Rd[0];
+	assign R3_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] &  Rd[1] &  Rd[0] | EXEC2 & LOAD & ~Rls[2] &  Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] &  Rd[0];
+	assign R4_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] & ~Rd[1] & ~Rd[0] | EXEC2 & LOAD &  Rls[2] & ~Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] & ~Rd[0];
+	assign R5_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] & ~Rd[1] &  Rd[0] | EXEC2 & LOAD &  Rls[2] & ~Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] &  Rd[0];
+	assign R6_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] &  Rd[1] & ~Rd[0] | EXEC2 & LOAD &  Rls[2] &  Rls[1] & ~Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] & ~Rd[0];
+	assign R7_en = ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] &  Rd[1] &  Rd[0] | EXEC2 & LOAD &  Rls[2] &  Rls[1] &  Rls[0] | EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] &  Rd[0];
 	assign s1[2] = EXEC1 & ((~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[2]) | (STORE & Rls[2]) | (PSH & Rs1[2]));
 	assign s1[1] = EXEC1 & ((~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[1]) | (STORE & Rls[1]) | (PSH & Rs1[1]));
 	assign s1[0] = EXEC1 & ((~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[0]) | (STORE & Rls[0]) | (PSH & Rs1[0]));
@@ -67,10 +68,11 @@ module DECODE
 	assign s3[2] = EXEC1 & ((~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP)) & Rd[2]);
 	assign s3[1] = EXEC1 & ((~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP)) & Rd[1]);
 	assign s3[0] = EXEC1 & ((~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP)) & Rd[0]);
-	assign s4 = EXEC1 & ~(LOAD | STORE);
+	assign s4[1] = POP | PSH;
+	assign s4[0] = ~(LOAD | POP | PSH);
 	assign RAMd_wren = EXEC1 & STORE;
 	assign RAMd_en = EXEC1 & (STORE | LOAD);
-	assign RAMi_en = EXEC1 & ~STP | EXEC2 & (LOAD | MUL | MLA | MLS);
+	assign RAMi_en = FETCH;
 	assign ALU_en = LOAD | STORE;
 	assign E2 = EXEC1 & (LOAD | MUL | MLA | MLS | POP);
 	assign stack_en = (EXEC1 & PSH) | POP;
