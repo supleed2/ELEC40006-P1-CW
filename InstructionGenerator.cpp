@@ -217,7 +217,6 @@ string getInstructionHex(string instruction){
       binary+="010101";
     }else if(opcode=="ADO"){
       binary+="010110";
-      rs1="R0";
       rs2="R0";
     }else if(opcode=="SUB"){
       binary+="011000";
@@ -225,7 +224,6 @@ string getInstructionHex(string instruction){
       binary+="011001";
     }else if(opcode=="SBO"){
       binary+="011010";
-      rs1="R0";
       rs2="R0";
     }else if(opcode=="MUL"){
       binary+="011100";
