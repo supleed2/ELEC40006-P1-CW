@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 224 352)
+	(rect 16 16 224 416)
 	(text "DECODE" (rect 5 0 47 12)(font "Arial" ))
-	(text "inst" (rect 8 320 20 332)(font "Arial" ))
+	(text "inst" (rect 8 384 20 396)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -177,7 +177,28 @@ refer to the applicable agreement for further details.
 		(text "E2" (rect 176 299 187 311)(font "Arial" ))
 		(line (pt 208 304)(pt 192 304)(line_width 1))
 	)
+	(port
+		(pt 208 320)
+		(output)
+		(text "stack_en" (rect 0 0 36 12)(font "Arial" ))
+		(text "stack_en" (rect 151 315 187 327)(font "Arial" ))
+		(line (pt 208 320)(pt 192 320)(line_width 1))
+	)
+	(port
+		(pt 208 336)
+		(output)
+		(text "stack_rst" (rect 0 0 37 12)(font "Arial" ))
+		(text "stack_rst" (rect 150 331 187 343)(font "Arial" ))
+		(line (pt 208 336)(pt 192 336)(line_width 1))
+	)
+	(port
+		(pt 208 352)
+		(output)
+		(text "stack_rw" (rect 0 0 36 12)(font "Arial" ))
+		(text "stack_rw" (rect 151 347 187 359)(font "Arial" ))
+		(line (pt 208 352)(pt 192 352)(line_width 1))
+	)
 	(drawing
-		(rectangle (rect 16 16 192 320)(line_width 1))
+		(rectangle (rect 16 16 192 384)(line_width 1))
 	)
 )
