@@ -17,6 +17,11 @@
                STA R6 909
 */
 
+/*
+  IMPORTANT NOTE: For the OR instruction, enter it as "_OR", otherwise the code breaks :(
+  -Kacper
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -190,7 +195,7 @@ string getInstructionHex(string instruction){
       rs2="R0";
     }else if(opcode=="AND"){
       binary+="001100";
-    }else if(opcode=="OR"){
+    }else if(opcode=="_OR"){
       binary+="001101";
     }else if(opcode=="XOR"){
       binary+="001110";
@@ -215,7 +220,7 @@ string getInstructionHex(string instruction){
       rs1="R0";
       rs2="R0";
     }else if(opcode=="SUB"){
-      binary+"011000";
+      binary+="011000";
     }else if(opcode=="SBC"){
       binary+="011001";
     }else if(opcode=="SBO"){
@@ -278,10 +283,12 @@ void generateMIF(vector<string> instructions){
   cout << "DATA_RADIX = HEX;" << endl;
   cout << "CONTENT" << endl;
   cout << "BEGIN" << endl;
-  cout << "[0..2047]: 0;" << endl;
-  for (int i = 0; i < instructions.size(); i++){
+  int i=0;
+  for (i; i < instructions.size(); i++){
     cout << i << " : " << instructions.at(i) << ";" << endl;
   }
+  cout << "[" << i << "..2047]: 0;" << endl;
+  cout << "END;" << endl;
 }
 
 int main(){
