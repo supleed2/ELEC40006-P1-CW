@@ -229,10 +229,9 @@ string getInstructionHex(string instruction){
     }else if(opcode=="MLS"){
       binary+="011110";
     }else if(opcode=="MRT"){
-      /*
-        TO BE COMPLETED FOR REGISTERS, ASK AADI
-      */
       binary+="011111";
+      rs1="R0";
+      rs2="R0";
     }else if(opcode=="LSL"){
       binary+="100000";
     }else if(opcode=="LSR"){
@@ -243,6 +242,15 @@ string getInstructionHex(string instruction){
       binary+="100100";
     }else if(opcode=="RRC"){
       binary+="100101";
+    }else if(opcode=="PSH"){
+      binary+="101000";
+      rs1=rd;
+      rd="R0";
+      rs2="R0";
+    }else if(opcode=="POP"){
+      binary+="101001";
+      rs1="R0";
+      rs2="R0";
     }else if(opcode=="NOP"){
       binary+="111110";
       rd="R0";
