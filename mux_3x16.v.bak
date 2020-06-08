@@ -12,7 +12,6 @@ always @(*) begin
 		2'b00: result = in0;
 		2'b01: result = in1;
 		2'b10: result = in2;
-		default: result = in0;
 	endcase
 end
 

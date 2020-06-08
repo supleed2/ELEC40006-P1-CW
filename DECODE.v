@@ -17,7 +17,7 @@ module DECODE
 	output [2:0] s1,
 	output [2:0] s2,
 	output [2:0] s3,
-	output [1:0]s4,
+	output s4,
 	output RAMd_wren,
 	output RAMd_en,
 	output RAMi_en,
@@ -68,8 +68,7 @@ module DECODE
 	assign s3[2] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rd[2]);
 	assign s3[1] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rd[1]);
 	assign s3[0] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rd[0]);
-	assign s4[1] = POP | PSH;
-	assign s4[0] = ~(LOAD | POP | PSH);
+	assign s4 = ~LOAD;
 	assign RAMd_wren = EXEC1 & STORE;
 	assign RAMd_en = EXEC1 & (STORE | LOAD);
 	assign RAMi_en = FETCH;

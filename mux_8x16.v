@@ -22,6 +22,7 @@ always @(*) begin
 		3'b101: result = in5;
 		3'b110: result = in6;
 		3'b111: result = in7;
+		default: result = in0;
 	endcase
 end
 
