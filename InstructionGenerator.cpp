@@ -240,7 +240,7 @@ string getInstructionHex(string instruction){
     }else if(opcode=="LSR"){
       binary+="100001";
     }else if(opcode=="ASR"){
-      binary+="100011";
+      binary+="100010";
     }else if(opcode=="ROR"){
       binary+="100100";
     }else if(opcode=="RRC"){
