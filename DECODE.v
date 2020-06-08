@@ -50,33 +50,33 @@ module DECODE
 	wire NOP = ~msb &  op[5] &  op[4] &  op[3] &  op[2] &  op[1] & ~op[0];
 	wire STP = ~msb &  op[5] &  op[4] &  op[3] &  op[2] &  op[1] &  op[0];
 	
-	assign R0_count = EXEC1 & (~(UJMP | (JMP & ~COND_result) | STP));
-	assign R0_en = (EXEC1 & (~(STORE | NOP | STP | LOAD) & ~Rd[2] & ~Rd[1] & ~Rd[0] | UJMP | JMP & COND_result)) | (EXEC2 & LOAD & ~Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] & ~Rd[0]);
-	assign R1_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LOAD & ~Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] &  Rd[0]);
-	assign R2_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LOAD & ~Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] & ~Rd[0]);
-	assign R3_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) & ~Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LOAD & ~Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] &  Rd[0]);
-	assign R4_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] & ~Rd[1] & ~Rd[0]) | (EXEC2 & LOAD &  Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] & ~Rd[0]);
-	assign R5_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LOAD &  Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] &  Rd[0]);
-	assign R6_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LOAD &  Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] & ~Rd[0]);
-	assign R7_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP) &  Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LOAD &  Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] &  Rd[0]);
-	assign s1[2] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[2]) | (STORE & Rls[2]) | (PSH & Rs1[2]);
-	assign s1[1] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[1]) | (STORE & Rls[1]) | (PSH & Rs1[1]);
-	assign s1[0] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[0]) | (STORE & Rls[0]) | (PSH & Rs1[0]);
-	assign s2[2] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs2[2]);
-	assign s2[1] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs2[1]);
-	assign s2[0] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs2[0]);
-	assign s3[2] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rd[2]);
-	assign s3[1] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rd[1]);
-	assign s3[0] = (~(UJMP | JMP | STORE | LOAD | NOP | STP | PSH | POP) & Rd[0]);
+	assign R0_count = EXEC1 & (~(UJMP | (JMP & COND_result) | STP));
+	assign R0_en = (EXEC1 & (~(STORE | NOP | STP | LOAD | PSH) & ~Rd[2] & ~Rd[1] & ~Rd[0] | UJMP | JMP & COND_result)) | (EXEC2 & LOAD & ~Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] & ~Rd[0]);
+	assign R1_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) & ~Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LOAD & ~Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] & ~Rd[1] &  Rd[0]);
+	assign R2_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) & ~Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LOAD & ~Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] & ~Rd[0]);
+	assign R3_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) & ~Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LOAD & ~Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) & ~Rd[2] &  Rd[1] &  Rd[0]);
+	assign R4_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) &  Rd[2] & ~Rd[1] & ~Rd[0]) | (EXEC2 & LOAD &  Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] & ~Rd[0]);
+	assign R5_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) &  Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LOAD &  Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] & ~Rd[1] &  Rd[0]);
+	assign R6_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) &  Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LOAD &  Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] & ~Rd[0]);
+	assign R7_en = (EXEC1 & ~(UJMP | JMP | STORE | LOAD | MUL | MLA | MLS | NOP | STP | POP | PSH) &  Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LOAD &  Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP) &  Rd[2] &  Rd[1] &  Rd[0]);
+	assign s1[2] = (~(UJMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[2]) | (STORE & Rls[2]) | (PSH & Rs1[2]);
+	assign s1[1] = (~(UJMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[1]) | (STORE & Rls[1]) | (PSH & Rs1[1]);
+	assign s1[0] = (~(UJMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs1[0]) | (STORE & Rls[0]) | (PSH & Rs1[0]);
+	assign s2[2] = (~(UJMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs2[2]);
+	assign s2[1] = (~(UJMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs2[1]);
+	assign s2[0] = (~(UJMP | STORE | LOAD | NOP | STP | PSH | POP) & Rs2[0]);
+	assign s3[2] = (~(STORE | LOAD | NOP | STP | PSH | POP) & Rd[2]);
+	assign s3[1] = (~(STORE | LOAD | NOP | STP | PSH | POP) & Rd[1]);
+	assign s3[0] = (~(STORE | LOAD | NOP | STP | PSH | POP) & Rd[0]);
 	assign s4 = ~LOAD;
 	assign RAMd_wren = EXEC1 & STORE;
 	assign RAMd_en = EXEC1 & (STORE | LOAD);
 	assign RAMi_en = FETCH;
 	assign ALU_en = LOAD | STORE;
 	assign E2 = EXEC1 & (LOAD | MUL | MLA | MLS | POP);
-	assign stack_en = (EXEC1 & PSH) | POP;
+	assign stack_en = (EXEC1 & PSH) | ((EXEC1 | EXEC2) & POP);
 	assign stack_rst = STP;
-	assign stack_rw = POP;
+	assign stack_rw = EXEC1 & PSH;
 	
 endmodule
 	
