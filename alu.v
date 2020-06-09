@@ -1,4 +1,4 @@
-module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, mul1, mul2, Rout, jump, carry);
+module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, mul1, mul2, Rout, jump, carry, jumpflags);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rd; // input destination register
@@ -14,6 +14,7 @@ output reg signed [15:0] mul2; // second number to be multiplied
 output signed [15:0] Rout; // value to be saved to destination register
 output jump; // tells decoder whether Jump condition is true
 output reg carry; // Internal carry register that is updated during appropriate opcodes, also provides output for debugging
+output [7:0] jumpflags;
 
 reg signed [16:0] alusum; // extra bit to hold carry from operations other than Multiply
 assign Rout = alusum [15:0];
@@ -30,8 +31,9 @@ assign JC5 = (Rs1 >= Rs2);
 assign JC6 = (Rs1 <= Rs2);
 assign JC7 = (Rs1 != Rs2);
 assign JC8 = (Rs1 < 0);
+assign jumpflags = {JC1, JC2, JC3, JC4, JC5, JC6, JC7, JC8};
 
-always @(*)
+always @(opcode, mulresult)
 	begin
 		if(!enable) begin
 			case (opcode)
@@ -87,31 +89,65 @@ always @(*)
 				
 				6'b011100: begin // MUL Multiply (Rd = Rs1 * Rs2)
 						if(!exec2) begin
-								mul1 = Rs1;
-								mul2 = Rs2;
+								if(Rs1[15]) begin
+										mul1 = ~Rs1 + {16'h0001};
+									end
+								else begin
+										mul1 = Rs1;
+									end
+								if(Rs2[15]) begin
+										mul2 = ~Rs2 + {16'h0001};
+									end
+								else begin
+										mul2 = Rs2;
+									end
+								alusum = 17'b00000000000000000;
+								carry = (Rs1[15]^Rs2[15]) ? 1'b1 : 1'b0;
 							end
 						else begin
-								alusum[16] = 1'b0;
-								{mulextra, alusum[15:0]} = mulresult;
+								{mulextra, alusum[15:0]} = (carry) ? ~mulresult + 32'h00000001 : mulresult;
 							end
 					end
 				6'b011101: begin // MLA Multiply and Add  (Rd = Rs2 + (Rd * Rs1))
 						if(!exec2) begin
-								mul1 = Rs1;
-								mul2 = Rs2;
+								if(Rd[15]) begin
+										mul1 = ~Rd + {16'h0001};
+									end
+								else begin
+										mul1 = Rd;
+									end
+								if(Rs1[15]) begin
+										mul2 = ~Rs1 + {16'h0001};
+									end
+								else begin
+										mul2 = Rs1;
+									end
+								alusum = 17'b00000000000000000;
+								carry = (Rs1[15]^Rs2[15]) ? 1'b1 : 1'b0;
 							end
 						else begin
-								alusum[16] = 1'b0;
-								{mulextra, alusum[15:0]} = mulresult + {16'h0000, Rs2};
+								{mulextra, alusum[15:0]} = (carry) ? ~mulresult + 32'h00000001 + {16'h0000, Rs2} : mulresult + {16'h0000, Rs2};
 							end
 					end
 				6'b011110: begin // MLS Multiply and Subtract (Rd = Rs2 - (Rd * Rs1)[15:0])
 						if(!exec2) begin
-								mul1 = Rs1;
-								mul2 = Rs2;
+								if(Rd[15]) begin
+										mul1 = ~Rd + {16'h0001};
+									end
+								else begin
+										mul1 = Rd;
+									end
+								if(Rs1[15]) begin
+										mul2 = ~Rs1 + {16'h0001};
+									end
+								else begin
+										mul2 = Rs1;
+									end
+								alusum = 17'b00000000000000000;
+								carry = (Rs1[15]^Rs2[15]) ? 1'b1 : 1'b0;
 							end
 						else begin
-								alusum = {1'b0, Rs2 - mulresult[15:0]};
+								alusum = (carry) ? {1'b0, Rs2 - (~mulresult[15:0] + 16'h0001)} : {1'b0, Rs2 - mulresult[15:0]};
 							end
 					end
 				6'b011111: alusum = mulextra; // MRT Retrieve Multiply MSBs (Rd = MSBs)
