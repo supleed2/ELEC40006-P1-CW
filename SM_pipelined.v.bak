@@ -1,0 +1,26 @@
+module SM_piplined (CLK, RST, E2, EXEC1, EXEC2);
+
+input CLK;
+input RST;
+input E2;
+output EXEC1;
+output EXEC2;
+
+reg s;
+
+always @(posedge CLK) begin
+	if(!RST)
+		if(!s)
+			if(E2)
+				s = 1'b1;
+			else ;
+		else
+			s = 1'b0;
+	else
+		s = 1'b0;
+end
+
+assign EXEC1 = ~s;
+assign EXEC2 = s;
+
+endmodule
