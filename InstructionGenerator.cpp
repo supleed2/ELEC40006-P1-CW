@@ -254,6 +254,12 @@ string getInstructionHex(string instruction){
       binary+="101001";
       rs1="R0";
       rs2="R0";
+    }else if(opcode=="LDR"){
+      binary+="101010";
+      rs2="R0";
+    }else if(opcode=="STR"){
+      binary+="101011";
+      rs2="R0";
     }else if(opcode=="NOP"){
       binary+="111110";
       rd="R0";
