@@ -205,6 +205,13 @@ refer to the applicable agreement for further details.
 		(text "stack_rw" (rect 151 347 187 359)(font "Arial" ))
 		(line (pt 208 352)(pt 192 352)(line_width 1))
 	)
+	(port
+		(pt 208 368)
+		(output)
+		(text "s5" (rect 0 0 9 12)(font "Arial" ))
+		(text "s5" (rect 178 363 187 375)(font "Arial" ))
+		(line (pt 208 368)(pt 192 368)(line_width 1))
+	)
 	(drawing
 		(rectangle (rect 16 16 192 384)(line_width 1))
 	)
