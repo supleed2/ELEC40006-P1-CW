@@ -4,9 +4,9 @@ editor if you plan to continue editing the block that represents it in
 the Block Editor! File corruption is VERY likely to occur.
 */
 /*
-Copyright (C) 2019  Intel Corporation. All rights reserved.
+Copyright (C) 2018  Intel Corporation. All rights reserved.
 Your use of Intel Corporation's design tools, logic functions 
-and other software and tools, and any partner logic 
+and other software and tools, and its AMPP partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
@@ -16,14 +16,13 @@ the Intel FPGA IP License Agreement, or other applicable license
 agreement, including, without limitation, that your use is for
 the sole purpose of programming logic devices manufactured by
 Intel and sold by Intel or its authorized distributors.  Please
-refer to the applicable agreement for further details, at
-https://fpgasoftware.intel.com/eula.
+refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 224 416)
+	(rect 16 16 224 448)
 	(text "DECODE" (rect 5 0 47 12)(font "Arial" ))
-	(text "inst" (rect 8 384 20 396)(font "Arial" ))
+	(text "inst" (rect 8 416 20 428)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -213,7 +212,21 @@ https://fpgasoftware.intel.com/eula.
 		(text "s5" (rect 178 363 187 375)(font "Arial" ))
 		(line (pt 208 368)(pt 192 368)(line_width 1))
 	)
+	(port
+		(pt 208 384)
+		(output)
+		(text "s6" (rect 0 0 9 12)(font "Arial" ))
+		(text "s6" (rect 178 379 187 391)(font "Arial" ))
+		(line (pt 208 384)(pt 192 384)(line_width 1))
+	)
+	(port
+		(pt 208 400)
+		(output)
+		(text "ADD1_en" (rect 0 0 41 12)(font "Arial" ))
+		(text "ADD1_en" (rect 146 395 187 407)(font "Arial" ))
+		(line (pt 208 400)(pt 192 400)(line_width 1))
+	)
 	(drawing
-		(rectangle (rect 16 16 192 384)(line_width 1))
+		(rectangle (rect 16 16 192 416)(line_width 1))
 	)
 )

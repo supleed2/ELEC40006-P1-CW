@@ -26,7 +26,9 @@ module DECODE
 	output stack_en,
 	output stack_rst,
 	output stack_rw,
-	output s5
+	output s5,
+	output s6,
+	output ADD1_en
 );
 
 	wire msb = instr[15];					//MSB of the instruction word
@@ -53,15 +55,15 @@ module DECODE
 	wire NOP = ~msb &  op[5] &  op[4] &  op[3] &  op[2] &  op[1] & ~op[0];
 	wire STP = ~msb &  op[5] &  op[4] &  op[3] &  op[2] &  op[1] &  op[0];
 	
-	assign R0_count = EXEC1 & (~(JMP | (JCX & COND_result) | STP));
+	assign R0_count = (FETCH & ~STP) | (EXEC1 & ~(JMP | (JCX & COND_result) | STP | LDR | LDA | MUL | MLA | MLS | POP)) | (EXEC2 & (LDR | LDA | MUL | MLA | MLS | POP));
 	assign R0_en = (EXEC1 & (~(STA | NOP | STP | LDA | PSH | LDR) & ~Rd[2] & ~Rd[1] & ~Rd[0] | JMP | JCX & COND_result)) | (EXEC2 & LDA & ~Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) & ~Rd[2] & ~Rd[1] & ~Rd[0]);
-	assign R1_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) & ~Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LDA & ~Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) & ~Rd[2] & ~Rd[1] &  Rd[0]);
-	assign R2_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) & ~Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LDA & ~Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) & ~Rd[2] &  Rd[1] & ~Rd[0]);
-	assign R3_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) & ~Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LDA & ~Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) & ~Rd[2] &  Rd[1] &  Rd[0]);
-	assign R4_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] & ~Rd[1] & ~Rd[0]) | (EXEC2 & LDA &  Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) &  Rd[2] & ~Rd[1] & ~Rd[0]);
-	assign R5_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LDA &  Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) &  Rd[2] & ~Rd[1] &  Rd[0]);
-	assign R6_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LDA &  Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) &  Rd[2] &  Rd[1] & ~Rd[0]);
-	assign R7_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LDA &  Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | STR | LDR) &  Rd[2] &  Rd[1] &  Rd[0]);
+	assign R1_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) & ~Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LDA & ~Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) & ~Rd[2] & ~Rd[1] &  Rd[0]);
+	assign R2_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) & ~Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LDA & ~Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) & ~Rd[2] &  Rd[1] & ~Rd[0]);
+	assign R3_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) & ~Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LDA & ~Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) & ~Rd[2] &  Rd[1] &  Rd[0]);
+	assign R4_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] & ~Rd[1] & ~Rd[0]) | (EXEC2 & LDA &  Rls[2] & ~Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) &  Rd[2] & ~Rd[1] & ~Rd[0]);
+	assign R5_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] & ~Rd[1] &  Rd[0]) | (EXEC2 & LDA &  Rls[2] & ~Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) &  Rd[2] & ~Rd[1] &  Rd[0]);
+	assign R6_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] &  Rd[1] & ~Rd[0]) | (EXEC2 & LDA &  Rls[2] &  Rls[1] & ~Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) &  Rd[2] &  Rd[1] & ~Rd[0]);
+	assign R7_en = (EXEC1 & ~(JMP | JCX | STA | LDA | MUL | MLA | MLS | NOP | STP | POP | PSH | LDR) &  Rd[2] &  Rd[1] &  Rd[0]) | (EXEC2 & LDA &  Rls[2] &  Rls[1] &  Rls[0]) | (EXEC2 & (MUL | MLA | MLS | POP | LDR) &  Rd[2] &  Rd[1] &  Rd[0]);
 	assign s1[2] = (~(JMP | STA | LDA | NOP | STP | POP) & Rs1[2]) | (STA & Rls[2]);
 	assign s1[1] = (~(JMP | STA | LDA | NOP | STP | POP) & Rs1[1]) | (STA & Rls[1]);
 	assign s1[0] = (~(JMP | STA | LDA | NOP | STP | POP) & Rs1[0]) | (STA & Rls[0]);
@@ -74,13 +76,15 @@ module DECODE
 	assign s4 = ~(LDA | LDR);
 	assign RAMd_wren = EXEC1 & (STA | STR);
 	assign RAMd_en = EXEC1 & (STA | LDA | STR | LDR);
-	assign RAMi_en = FETCH;
+	assign RAMi_en = (FETCH & ~STP) | (EXEC1 & ~(LDA | LDR | MUL | MLA | MLS | POP | STP)) | (EXEC2 & (LDA | LDR | MUL | MLA | MLS | POP | STP));
 	assign ALU_en = LDA | STA;
 	assign E2 = EXEC1 & (LDA | MUL | MLA | MLS | POP | LDR);
 	assign stack_en = (EXEC1 & PSH) | ((EXEC1 | EXEC2) & POP);
 	assign stack_rst = STP;
 	assign stack_rw = EXEC1 & PSH;
 	assign s5 = EXEC1 & (STR | LDR);
+	assign s6 = EXEC1 & (JMP | (JCX & COND_result));
+	assign ADD1_en = EXEC1 & (JMP | (JCX & COND_result));
 	
 endmodule
 	

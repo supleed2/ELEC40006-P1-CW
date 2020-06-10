@@ -1,27 +1,31 @@
-module SM_pipelined (CLK, RST, E2, EXEC1, EXEC2);
+module SM_pipelined (CLK, E2, RST, FETCH, EXEC1, EXEC2);
 
 input CLK;
-input RST;
 input E2;
+input RST;
+output FETCH;
 output EXEC1;
 output EXEC2;
 
-reg s = 0;
+reg [1:0]s = 2'b00;
 
-assign EXEC1 = ~s;
-assign EXEC2 = s;
+assign FETCH = ~s[1] & ~s[0];
+assign EXEC1 = ~s[1] &  s[0];
+assign EXEC2 =  s[1] & ~s[0];
 
 always @(posedge CLK) begin
 	if(!RST)
-		if(!s)
-			if(E2)
-				s <= 1;
-			else
-				s <= 0;
-		else
-			s <= 0;
+		case(s)
+			2'b00: s <= 2'b01;
+			2'b01: begin
+				if(E2)
+					s <= 2'b10;
+				else ;
+			end
+			2'b10: s <= 2'b01;
+		endcase
 	else
-		s <= 0;
+		s <= 2'b00;
 end
 
 endmodule
