@@ -1,4 +1,4 @@
-module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, memdatain, mul1, mul2, Rout, jump, carry, jumpflags, memaddr);
+module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, mul1, mul2, Rout, jump, memaddr);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rs1; // input source register 1
@@ -8,14 +8,12 @@ input [5:0] opcode; // opcode is fed in from instruction using wires outside ALU
 input signed [31:0] mulresult; // 32-bit result from multiplier
 input exec2; // Input from state machine to indicate when to take in result from multiplication
 input [15:0] stackout; // input from stack to be fed back to registers
-input signed [15:0] memdatain; // input data from RAMd
 
 output reg signed [15:0] mul1; // first number to be multiplied
 output reg signed [15:0] mul2; // second number to be multiplied
 output signed [15:0] Rout; // value to be saved to destination register
 output jump; // tells decoder whether Jump condition is true
-output reg carry; // Internal carry register that is updated during appropriate opcodes, also provides output for debugging
-output [7:0] jumpflags;
+reg carry; // Internal carry register that is updated during appropriate opcodes
 output reg [10:0] memaddr; // address to load data from / store data to RAMd
 
 reg signed [16:0] alusum; // extra bit to hold carry from operations other than Multiply
@@ -33,7 +31,6 @@ assign JC5 = (Rs1 >= Rs2);
 assign JC6 = (Rs1 <= Rs2);
 assign JC7 = (Rs1 != Rs2);
 assign JC8 = (Rs1 < 0);
-assign jumpflags = {JC1, JC2, JC3, JC4, JC5, JC6, JC7, JC8};
 
 always @(opcode, mulresult)
 	begin
@@ -169,9 +166,6 @@ always @(opcode, mulresult)
 				6'b101010: begin // LDR Indirect Load (Rd = Mem[Rs1])
 						if(!exec2) begin
 								memaddr = Rs1[10:0];
-							end
-						else begin
-								alusum = {1'b0, memdatain};
 							end
 					end
 				6'b101011: begin // STR Indirect Store (Mem[Rd] = Rs1)
