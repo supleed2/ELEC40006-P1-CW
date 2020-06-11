@@ -1,0 +1,44 @@
+Comments:
+  R1 holds x, value to be found
+  R2 holds head, the memory location of the first element
+  R3 holds the number END = 16b'0000100000000000'=0x800 (for comparing, this is the end of the linked list)
+  R4 holds the current element in the traversed list
+  R5 holds the number 0xB (for jumping to the end)
+  R6 holds the number 0x5 (for jumping back)
+  A linked list pair is stored as men[N]=value and mem[N+1] = address of next element
+
+(0x0) LDA R1 ##MEMORY_LOCATION_OF_x##                (loads the value to be found, x, into R1)
+(0x1) LDA R2 ##MEMORY_LOCATION_OF_head##             (loads the address of the first element into R2)
+(0x2) LDA R3 ##MEMORY_LOCATION_OF_END##              (loads a number (0x800) to R3 which is our definition of an end of a linked list)
+(0x3) LDA R5 ####MEMORY_LOCATION_CONTAINING_0xB##    (loads a number (0xB) to R5 which is used for jumping to STP, when the element is found or no elements left)
+(0x4) LDA R6 ####MEMORY_LOCATION_CONTAINING_0x5##    (loads a number (0x5) to R6 which is used for jumping to back, if current element is not the required element and there are still elements left)
+(0x5) LDR R4 R2                                      (loads R4 using data from the memory address which is the value in R4)
+(0x6) JC3 R5 R4 R1                                   (jumps to the end ('STP') if R4 (current element) is equal to R1 (required element))
+(0x7) ADO R2                                         (adds one to R2, which when completed contains the address of the address of next element in the linked list)
+(0x8) LDR R2 R2                                      (loads the address of the next element into R2, thus updating the current head)
+(0x9) JC3 R5 R2 R3                                   (jumps to the end ('STP') if R2 (current head) is equal to R3 (end of list)
+(0xA) JMP R6                                         (jumps to value stored in R4 () which repeats this process)
+(0xB) STP                                            (program end)
+
+
+Example that can be used with the instruction generator program:
+LDA R1 0
+LDA R2 1
+LDA R3 2
+LDA R5 3
+LDA R6 4
+LDR R4 R2
+JC3 R5 R4 R1
+ADO R2
+LDR R2 R2
+JC3 R5 R2 R3
+JMP R6
+STP
+
+Requires setting the following data memory locations:
+Set location '0' to value of x;
+Set location '1' to value of head;
+Set location '2' to value of 0x800 (end of linked list)
+Set location '3' to value of 0xB (end of program, STP);
+Set location '4' to value of 0x5; (going back)
+Create a linked list that starts at 'head' memory location
