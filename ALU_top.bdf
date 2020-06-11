@@ -4,9 +4,9 @@ editor if you plan to continue editing the block that represents it in
 the Block Editor! File corruption is VERY likely to occur.
 */
 /*
-Copyright (C) 2019  Intel Corporation. All rights reserved.
+Copyright (C) 2018  Intel Corporation. All rights reserved.
 Your use of Intel Corporation's design tools, logic functions 
-and other software and tools, and any partner logic 
+and other software and tools, and its AMPP partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
@@ -16,8 +16,7 @@ the Intel FPGA IP License Agreement, or other applicable license
 agreement, including, without limitation, that your use is for
 the sole purpose of programming logic devices manufactured by
 Intel and sold by Intel or its authorized distributors.  Please
-refer to the applicable agreement for further details, at
-https://fpgasoftware.intel.com/eula.
+refer to the applicable agreement for further details.
 */
 (header "graphic" (version "1.4"))
 (pin
@@ -149,22 +148,6 @@ https://fpgasoftware.intel.com/eula.
 	(text "VCC" (rect 136 7 156 17)(font "Arial" (font_size 6)))
 )
 (pin
-	(input)
-	(rect 344 368 528 384)
-	(text "INPUT" (rect 141 0 169 10)(font "Arial" (font_size 6)))
-	(text "memdatain[15..0]" (rect 5 0 89 17)(font "Intel Clear" ))
-	(pt 184 8)
-	(drawing
-		(line (pt 100 12)(pt 125 12))
-		(line (pt 100 4)(pt 125 4))
-		(line (pt 129 8)(pt 184 8))
-		(line (pt 100 12)(pt 100 4))
-		(line (pt 125 4)(pt 129 8))
-		(line (pt 125 12)(pt 129 8))
-	)
-	(text "VCC" (rect 144 7 164 17)(font "Arial" (font_size 6)))
-)
-(pin
 	(output)
 	(rect 800 272 976 288)
 	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
@@ -199,86 +182,6 @@ https://fpgasoftware.intel.com/eula.
 (pin
 	(output)
 	(rect 800 304 976 320)
-	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
-	(text "CARRY" (rect 90 0 130 12)(font "Arial" ))
-	(pt 0 8)
-	(drawing
-		(line (pt 0 8)(pt 52 8))
-		(line (pt 52 4)(pt 78 4))
-		(line (pt 52 12)(pt 78 12))
-		(line (pt 52 12)(pt 52 4))
-		(line (pt 78 4)(pt 82 8))
-		(line (pt 82 8)(pt 78 12))
-		(line (pt 78 12)(pt 82 8))
-	)
-)
-(pin
-	(output)
-	(rect 768 480 944 496)
-	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
-	(text "MUL_res[31..0]" (rect 90 0 165 12)(font "Arial" ))
-	(pt 0 8)
-	(drawing
-		(line (pt 0 8)(pt 52 8))
-		(line (pt 52 4)(pt 78 4))
-		(line (pt 52 12)(pt 78 12))
-		(line (pt 52 12)(pt 52 4))
-		(line (pt 78 4)(pt 82 8))
-		(line (pt 82 8)(pt 78 12))
-		(line (pt 78 12)(pt 82 8))
-	)
-)
-(pin
-	(output)
-	(rect 800 320 976 336)
-	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
-	(text "jumpflags[7..0]" (rect 90 0 164 12)(font "Arial" ))
-	(pt 0 8)
-	(drawing
-		(line (pt 0 8)(pt 52 8))
-		(line (pt 52 4)(pt 78 4))
-		(line (pt 52 12)(pt 78 12))
-		(line (pt 52 12)(pt 52 4))
-		(line (pt 78 4)(pt 82 8))
-		(line (pt 82 8)(pt 78 12))
-		(line (pt 78 12)(pt 82 8))
-	)
-)
-(pin
-	(output)
-	(rect 800 240 976 256)
-	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
-	(text "mul1[15..0]" (rect 90 0 145 12)(font "Arial" ))
-	(pt 0 8)
-	(drawing
-		(line (pt 0 8)(pt 52 8))
-		(line (pt 52 4)(pt 78 4))
-		(line (pt 52 12)(pt 78 12))
-		(line (pt 52 12)(pt 52 4))
-		(line (pt 78 4)(pt 82 8))
-		(line (pt 82 8)(pt 78 12))
-		(line (pt 78 12)(pt 82 8))
-	)
-)
-(pin
-	(output)
-	(rect 800 256 976 272)
-	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
-	(text "mul2[15..0]" (rect 90 0 145 12)(font "Arial" ))
-	(pt 0 8)
-	(drawing
-		(line (pt 0 8)(pt 52 8))
-		(line (pt 52 4)(pt 78 4))
-		(line (pt 52 12)(pt 78 12))
-		(line (pt 52 12)(pt 52 4))
-		(line (pt 78 4)(pt 82 8))
-		(line (pt 82 8)(pt 78 12))
-		(line (pt 78 12)(pt 82 8))
-	)
-)
-(pin
-	(output)
-	(rect 800 336 976 352)
 	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
 	(text "memaddr[10..0]" (rect 90 0 165 17)(font "Intel Clear" ))
 	(pt 0 8)
@@ -329,9 +232,9 @@ https://fpgasoftware.intel.com/eula.
 	)
 )
 (symbol
-	(rect 544 216 776 424)
+	(rect 544 216 768 392)
 	(text "alu" (rect 5 0 19 12)(font "Arial" ))
-	(text "ALU_in" (rect 8 192 43 204)(font "Arial" ))
+	(text "ALU_in" (rect 8 160 43 172)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -389,63 +292,42 @@ https://fpgasoftware.intel.com/eula.
 		(line (pt 0 144)(pt 16 144)(line_width 3))
 	)
 	(port
-		(pt 0 160)
-		(input)
-		(text "memdatain[15..0]" (rect 0 0 86 12)(font "Arial" ))
-		(text "memdatain[15..0]" (rect 21 155 107 167)(font "Arial" ))
-		(line (pt 0 160)(pt 16 160)(line_width 3))
-	)
-	(port
-		(pt 232 32)
+		(pt 224 32)
 		(output)
 		(text "mul1[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "mul1[15..0]" (rect 165 27 211 39)(font "Arial" ))
-		(line (pt 232 32)(pt 216 32)(line_width 3))
+		(text "mul1[15..0]" (rect 157 27 203 39)(font "Arial" ))
+		(line (pt 224 32)(pt 208 32)(line_width 3))
 	)
 	(port
-		(pt 232 48)
+		(pt 224 48)
 		(output)
 		(text "mul2[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "mul2[15..0]" (rect 165 43 211 55)(font "Arial" ))
-		(line (pt 232 48)(pt 216 48)(line_width 3))
+		(text "mul2[15..0]" (rect 157 43 203 55)(font "Arial" ))
+		(line (pt 224 48)(pt 208 48)(line_width 3))
 	)
 	(port
-		(pt 232 64)
+		(pt 224 64)
 		(output)
 		(text "Rout[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "Rout[15..0]" (rect 165 59 211 71)(font "Arial" ))
-		(line (pt 232 64)(pt 216 64)(line_width 3))
+		(text "Rout[15..0]" (rect 157 59 203 71)(font "Arial" ))
+		(line (pt 224 64)(pt 208 64)(line_width 3))
 	)
 	(port
-		(pt 232 80)
+		(pt 224 80)
 		(output)
 		(text "jump" (rect 0 0 23 12)(font "Arial" ))
-		(text "jump" (rect 192 75 211 87)(font "Arial" ))
-		(line (pt 232 80)(pt 216 80))
+		(text "jump" (rect 184 75 203 87)(font "Arial" ))
+		(line (pt 224 80)(pt 208 80))
 	)
 	(port
-		(pt 232 96)
-		(output)
-		(text "carry" (rect 0 0 25 12)(font "Arial" ))
-		(text "carry" (rect 190 91 211 103)(font "Arial" ))
-		(line (pt 232 96)(pt 216 96))
-	)
-	(port
-		(pt 232 112)
-		(output)
-		(text "jumpflags[7..0]" (rect 0 0 74 12)(font "Arial" ))
-		(text "jumpflags[7..0]" (rect 149 107 211 119)(font "Arial" ))
-		(line (pt 232 112)(pt 216 112)(line_width 3))
-	)
-	(port
-		(pt 232 128)
+		(pt 224 96)
 		(output)
 		(text "memaddr[10..0]" (rect 0 0 77 12)(font "Arial" ))
-		(text "memaddr[10..0]" (rect 146 123 211 135)(font "Arial" ))
-		(line (pt 232 128)(pt 216 128)(line_width 3))
+		(text "memaddr[10..0]" (rect 138 91 203 103)(font "Arial" ))
+		(line (pt 224 96)(pt 208 96)(line_width 3))
 	)
 	(drawing
-		(rectangle (rect 16 16 216 192))
+		(rectangle (rect 16 16 208 160))
 	)
 )
 (connector
@@ -536,73 +418,41 @@ https://fpgasoftware.intel.com/eula.
 	(bus)
 )
 (connector
-	(pt 752 488)
-	(pt 768 488)
-	(bus)
-)
-(connector
-	(pt 784 264)
-	(pt 784 440)
-	(bus)
-)
-(connector
 	(pt 536 448)
 	(pt 792 448)
 	(bus)
 )
 (connector
-	(pt 792 248)
-	(pt 792 448)
-	(bus)
-)
-(connector
-	(pt 776 280)
-	(pt 800 280)
-	(bus)
-)
-(connector
-	(pt 776 296)
 	(pt 800 296)
+	(pt 768 296)
 )
 (connector
-	(pt 776 312)
+	(pt 784 440)
+	(pt 784 264)
+	(bus)
+)
+(connector
+	(pt 784 264)
+	(pt 768 264)
+	(bus)
+)
+(connector
+	(pt 792 448)
+	(pt 792 248)
+	(bus)
+)
+(connector
+	(pt 792 248)
+	(pt 768 248)
+	(bus)
+)
+(connector
+	(pt 800 280)
+	(pt 768 280)
+	(bus)
+)
+(connector
+	(pt 768 312)
 	(pt 800 312)
-)
-(connector
-	(pt 776 328)
-	(pt 800 328)
 	(bus)
 )
-(connector
-	(pt 776 248)
-	(pt 792 248)
-	(bus)
-)
-(connector
-	(pt 792 248)
-	(pt 800 248)
-	(bus)
-)
-(connector
-	(pt 776 264)
-	(pt 784 264)
-	(bus)
-)
-(connector
-	(pt 784 264)
-	(pt 800 264)
-	(bus)
-)
-(connector
-	(pt 776 344)
-	(pt 800 344)
-	(bus)
-)
-(connector
-	(pt 544 376)
-	(pt 528 376)
-	(bus)
-)
-(junction (pt 752 488))
-(junction (pt 784 264))
-(junction (pt 792 248))
