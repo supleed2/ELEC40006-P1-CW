@@ -157,7 +157,7 @@ always @(opcode, mulresult)
 				6'b100011: ;
 				
 				6'b100100: alusum = {1'b0, (Rs1 >> Rs2[3:0]) | (Rs1 << (16 - Rs2[3:0]))}; // ROR Shift Right Loop (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Rs1[15])
-				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
+				//6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
 				6'b100110: ;
 				6'b100111: ;
 				
