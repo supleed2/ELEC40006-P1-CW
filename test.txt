@@ -1,0 +1,5 @@
+LDA R1 0
+JMA 3
+LDA R1 1
+STP
+

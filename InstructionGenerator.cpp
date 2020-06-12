@@ -161,6 +161,10 @@ string getInstructionHex(string instruction){
     binary+=getRegisterBinary(rd);
     int lengthOfAddress = instruction.size()-5;
     binary+=convertDecimalToBinary(stoi(instruction.substr(5, lengthOfAddress)), 11);
+  }else if(opcode=="JMA"){
+    binary="0000001";
+    int lengthOfAddress = instruction.size()-3;
+    binary+=convertDecimalToBinary(stoi(instruction.substr(3, lengthOfAddress)), 9);
   }else{
     binary="0";
     string rs1, rs2;
