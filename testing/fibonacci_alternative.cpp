@@ -4,7 +4,7 @@ using namespace std;
 
 int fib(int n){
   int temp = n; //temporary variable, set equal to n
-  stack <int> s;
+  stack<int> s;
   //if n is non-negative, decrease until reaches zero to fill up stack
   while(temp>1){
     s.push(0); //n is not 0 or 1, hence push 0 onto stack, come back later

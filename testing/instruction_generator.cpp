@@ -18,8 +18,7 @@
 */
 
 /*
-  IMPORTANT NOTE: For the OR instruction, enter it as "_OR", otherwise the code breaks :(
-  -Kacper
+  IMPORTANT NOTE: For the OR instruction, enter it as "_OR", otherwise the code breaks :( -Kacper
 */
 
 #include <iostream>
@@ -72,7 +71,7 @@ string convertBinaryToHex(string binary4){
   }else if(binary4=="1111"){
     return "F";
   }else{
-    cerr << "Invalide binary quartet, cannot convert to HEX (line 78 in .cpp file)" << endl;
+    cerr << "Invalid binary quartet, cannot convert to HEX (line 78 in .cpp file)" << endl;
     assert(0);
   }
 }

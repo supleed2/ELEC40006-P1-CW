@@ -1,15 +1,13 @@
 Comments:
-  R1 holds y, as described in the source code
-  R2 holds a, as described in the source code
-  R3 holds b, as described in the source code
-  R4 holds n, as described in the source code
-  R5 holds the output (sum), as described in the source code
-  R6 holds the number 0xB (for jumping to the end of the program)
-  R7 holds the number 0x6 (for jumping back)
+  R1 holds n, for calculating the nth Fibonacci number
+  R2 holds the number 1, for comparing <=1
+  R3 will hold the answers, the nth Fibonacci number (and any intermediate results)
+  R4
+  R5
 
-(0x0) LDA R1 ##MEMORY_LOCATION_OF_s##                  (loads the seed, s, into R1, which then becomes y as in the source code)
-(0x1) LDA R2 ##MEMORY_LOCATION_OF_a##                  (loads a into R2)
-(0x2) LDA R3 ##MEMORY_LOCATION_OF_b##                  (loads b into R3)
+(0x0) LDA R1 ##MEMORY_LOCATION_OF_n##                  (loads n into R1)
+(0x1) LDA R2 ##MEMORY_LOCATION_CONTAINING_0x1##        (loads number 1 into R2)
+(0x2) LDA R3 ##MEMORY_LOCATION_OF_0x##                 (loads 0 into R3, we set 0 as the initial result)
 (0x3) LDA R4 ##MEMORY_LOCATION_OF_n##                  (loads n into R4)
 (0x4) LDA R6 ##MEMORY_LOCATION_CONTAINING_0xA##        (loads 0xB, memory location of program end to R6)
 (0x5) LDA R7 ##MEMORY_LOCATION_CONTAINING_0x6##        (loads 0x6, memory location for jumping back)
@@ -21,24 +19,21 @@ Comments:
 (0xB) STP
 
 
+
+MOV
+
+
+
+JC6 ... R1 R2
+PSH R2
+
+
+
+
 Example that can be used with the instruction generator program:
-LDA R1 0
-LDA R2 1
-LDA R3 2
-LDA R4 3
-LDA R6 4
-LDA R7 5
-JC4 R6 R4
-MLA R1 R2 R3
-ADD R5 R5 R1
-SBO R4 R4
-JMP R7 R6
-STP
+
 
 Requires setting the following data memory location:
-Set location '0' to value of s;
-Set location '1' to value of a;
-Set location '2' to value of b;
-Set location '3' to value of n;
-Set location '4' to value of 0xB;
-Set location '5' to value of 0x6;
+Set location '0' to value of n;
+Set location '1' to value of 1 (decimal number);
+Set location '2' to value of 0 (decimal number)
