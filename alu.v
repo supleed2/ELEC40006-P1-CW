@@ -164,7 +164,7 @@ always @(opcode, mulresult)
 //				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
 				6'b100110: begin  //CLL function call
 						if(!exec2) begin
-								alusum = {1'b0, Rs1};
+								alusum = {1'b1, Rd};
 							end
 						else begin
 								alusum = {1'b1, Rd};
