@@ -1,14 +1,13 @@
-module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, memdatain, mul1, mul2, Rout, jump, carry, jumpflags, memaddr);
+module alu (enable, Rs1, Rs2, Rd, instr, mulresult, exec2, stackout, mul1, mul2, Rout, jump, carry, jumpflags, memaddr);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rs1; // input source register 1
 input signed [15:0] Rs2; // input source register 2
 input signed [15:0] Rd; // input destination register
-input [5:0] opcode; // opcode is fed in from instruction using wires outside ALU
+input [15:0] instr; // current instruction being executed
 input signed [31:0] mulresult; // 32-bit result from multiplier
 input exec2; // Input from state machine to indicate when to take in result from multiplication
 input [15:0] stackout; // input from stack to be fed back to registers
-input signed [15:0] memdatain; // input data from RAMd
 
 output reg signed [15:0] mul1; // first number to be multiplied
 output reg signed [15:0] mul2; // second number to be multiplied
@@ -18,6 +17,7 @@ output reg carry; // Internal carry register that is updated during appropriate 
 output [7:0] jumpflags;
 output reg [10:0] memaddr; // address to load data from / store data to RAMd
 
+wire [5:0]opcode = instr[14:9]; //opcode of current instruction
 reg signed [16:0] alusum; // extra bit to hold carry from operations other than Multiply
 assign Rout = alusum [15:0];
 assign jump = (alusum[16] && ((opcode[5:2] == 4'b0000) | (opcode[5:2] == 4'b0001) | (opcode[5:2] == 4'b0010)));
@@ -40,6 +40,7 @@ always @(opcode, mulresult)
 		if(!enable) begin
 			case (opcode)
 				6'b000000: alusum = {1'b1, Rd}; // JMP Unconditional Jump, first bit high to indicate jump and passes through Rd
+				6'b000001: alusum = {8'b10000000, instr[8:0]};  //JMA unconditional jump to address, first bit high to indicate jump, rest set to destination
 				
 				6'b000100: alusum = {JC1, Rd}; // JC1 Conditional Jump A < B
 				6'b000101: alusum = {JC2, Rd}; // JC2 Conditional Jump A > B
@@ -169,9 +170,6 @@ always @(opcode, mulresult)
 				6'b101010: begin // LDR Indirect Load (Rd = Mem[Rs1])
 						if(!exec2) begin
 								memaddr = Rs1[10:0];
-							end
-						else begin
-								alusum = {1'b0, memdatain};
 							end
 					end
 				6'b101011: begin // STR Indirect Store (Mem[Rd] = Rs1)

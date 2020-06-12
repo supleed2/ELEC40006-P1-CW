@@ -43,7 +43,8 @@ module DECODE
 	//Different opcodes (refer to documentation):
 	wire LDA =  msb & ~ls;
 	wire STA =  msb &  ls;
-	wire JMP = ~msb & ~op[5] & ~op[4] & ~op[3] & ~op[2];
+	wire JMP = ~msb & ~op[5] & ~op[4] & ~op[3] & ~op[2] & ~op[1] & ~op[0];
+	wire JMA = ~msb & ~op[5] & ~op[4] & ~op[3] & ~op[2] & ~op[1] &  op[0];
 	wire JCX = ~msb & ((~op[5] & ~op[4] & ~op[3] & op[2]) | (~op[5] & ~op[4] & op[3] & ~op[2]));
 	wire MUL = ~msb & ~op[5] &  op[4] &  op[3] &  op[2] & ~op[1] & ~op[0];
 	wire MLA = ~msb & ~op[5] &  op[4] &  op[3] &  op[2] & ~op[1] &  op[0];
@@ -83,8 +84,8 @@ module DECODE
 	assign stack_rst = STP;
 	assign stack_rw = EXEC1 & PSH;
 	assign s5 = EXEC1 & (STR | LDR);
-	assign s6 = EXEC1 & (JMP | (JCX & COND_result));
-	assign ADD1_en = EXEC1 & (JMP | (JCX & COND_result));
-	
+	assign s6 = EXEC1 & (JMP | JMA | (JCX & COND_result));
+	assign ADD1_en = EXEC1 & (JMP | JMA | (JCX & COND_result));
+
 endmodule
 	
