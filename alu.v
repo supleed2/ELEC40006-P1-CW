@@ -161,9 +161,20 @@ always @(opcode, mulresult)
 				6'b100011: ;
 				
 				6'b100100: alusum = {1'b0, (Rs1 >> Rs2[3:0]) | (Rs1 << (16 - Rs2[3:0]))}; // ROR Shift Right Loop (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Rs1[15])
-				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
-				6'b100110: ;
-				6'b100111: ;
+//				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
+				6'b100110: begin  //CLL function call
+						if(!exec2) begin
+								alusum = {1'b0, Rs1};
+							end
+						else begin
+								alusum = {1'b1, Rd};
+							end
+					end
+				6'b100111: begin  //RTN return to prev call
+						if(exec2) begin
+								alusum = {1'b0, stackout}; 
+							end
+					end
 				
 				6'b101000: alusum = {1'b0, Rs1}; // PSH Push value to stack (Stack = Rs1)
 				6'b101001: alusum = {1'b0, stackout}; // POP Pop value from stack (Rd = Stack)
