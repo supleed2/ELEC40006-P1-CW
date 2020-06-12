@@ -10,13 +10,13 @@ Comments:
 (0x1) LDA R2 ##MEMORY_LOCATION_OF_head##             (loads the address of the first element into R2)
 (0x2) LDA R3 ##MEMORY_LOCATION_OF_END##              (loads a number (0x800) to R3 which is our definition of an end of a linked list)
 (0x3) LDA R5 ####MEMORY_LOCATION_CONTAINING_0xB##    (loads a number (0xB) to R5 which is used for jumping to STP, when the element is found or no elements left)
-(0x5) LDR R4 R2                                      (loads R4 using data from the memory address which is the value in R4)
-(0x6) JC3 R5 R4 R1                                   (jumps to the end ('STP') if R4 (current element) is equal to R1 (required element))
-(0x7) ADO R2 R2                                      (adds one to R2, which when completed contains the address of the address of next element in the linked list)
-(0x8) LDR R2 R2                                      (loads the address of the next element into R2, thus updating the current head)
-(0x9) JC3 R5 R2 R3                                   (jumps to the end ('STP') if R2 (current head) is equal to R3 (end of list)
-(0xA) JMA 5                                          (jumps to 0x5 which repeats this process)
-(0xB) STP                                            (program end)
+(0x4) LDR R4 R2                                      (loads R4 using data from the memory address which is the value in R4)
+(0x5) JC3 R5 R4 R1                                   (jumps to the end ('STP') if R4 (current element) is equal to R1 (required element))
+(0x6) ADO R2 R2                                      (adds one to R2, which when completed contains the address of the address of next element in the linked list)
+(0x7) LDR R2 R2                                      (loads the address of the next element into R2, thus updating the current head)
+(0x8) JC3 R5 R2 R3                                   (jumps to the end ('STP') if R2 (current head) is equal to R3 (end of list)
+(0x9) JMA 4                                          (jumps to 0x5 which repeats this process)
+(0xA) STP                                            (program end)
 
 
 Example that can be used with the instruction generator program:
@@ -26,15 +26,15 @@ LDA R3 2
 LDA R5 3
 LDR R4 R2
 JC3 R5 R4 R1
-ADO R2
+ADO R2 R2
 LDR R2 R2
 JC3 R5 R2 R3
-JMA 5
+JMA 4
 STP
 
 Requires setting the following data memory locations:
 Set location '0' to value of x;
 Set location '1' to value of head;
 Set location '2' to value of 0x800 (end of linked list)
-Set location '3' to value of 0xB (end of program, STP);
+Set location '3' to value of 0xA (end of program, STP);
 Create a linked list that starts at 'head' memory location
