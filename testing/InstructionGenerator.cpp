@@ -18,7 +18,8 @@
 */
 
 /*
-  IMPORTANT NOTE: For the OR instruction, enter it as "_OR", otherwise the code breaks :( -Kacper
+  IMPORTANT NOTE: For the OR instruction, enter it as "_OR", otherwise the code breaks :(
+  -Kacper
 */
 
 #include <iostream>
@@ -71,7 +72,7 @@ string convertBinaryToHex(string binary4){
   }else if(binary4=="1111"){
     return "F";
   }else{
-    cerr << "Invalid binary quartet, cannot convert to HEX (line 78 in .cpp file)" << endl;
+    cerr << "Invalide binary quartet, cannot convert to HEX (line 78 in .cpp file)" << endl;
     assert(0);
   }
 }
@@ -160,6 +161,10 @@ string getInstructionHex(string instruction){
     binary+=getRegisterBinary(rd);
     int lengthOfAddress = instruction.size()-5;
     binary+=convertDecimalToBinary(stoi(instruction.substr(5, lengthOfAddress)), 11);
+  }else if(opcode=="JMA"){
+    binary="0000001";
+    int lengthOfAddress = instruction.size()-3;
+    binary+=convertDecimalToBinary(stoi(instruction.substr(3, lengthOfAddress)), 9);
   }else{
     binary="0";
     string rs1, rs2;
