@@ -9,7 +9,7 @@ Comments:
 
 (0x0)  JMA 2                                          (skips the STP command)
 (0x1)  STP                                            (program end)
-(0x2)  LDA R1 ##MEMORY_LOCATION_OF_n##                (load n into R1)
+(0x2)  LDA R1 ##MEMORY_LOCATION_OF_n##                (load master n into R1)
 (0x3)  LDA R7 ##MEMORY_LOCATION_CONTAINING_0x1##      (load 0x1, number needed for n<=1 comparison, to R7)
 (0x4)  LDA R6 ##MEMORY_LOCATION_CONTAINING_0xD##      (load 0xD, memory location of the 'else' part of the 'fib' function, to R6)
 (0x5)  LDA R5 ##MEMORY_LOCATION_CONTAINING_0x7##      (load 0x7, memory location of the beginning of the 'fib' function, to R5)
@@ -68,7 +68,7 @@ JC3 R7 R1 R3
 RTN
 
 Requires setting the following data memory locations:
-Set location '0x0' to value of x.
+Set location '0x0' to value of n.
 Set location '0x1' to value of 0x1 (used for n<=1 comparison).
 Set location '0x2' to value of 0xD (beginning of 'else' part of 'fib' function).
 Set location '0x3' to value of 0x7 (beginning of 'fib' function).
