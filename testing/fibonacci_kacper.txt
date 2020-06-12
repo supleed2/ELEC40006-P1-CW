@@ -1,0 +1,75 @@
+Comments:
+  R1 holds n in the current function call; used to communicate between calls (input)
+  R2 holds y of the last call; used to communicate between calls (output)
+  R3 holds y of the current function call
+  R4 holds the number 0x2, the value to subtract for the fib(n-2) call
+  R5 holds the number 0x7, the address of the beginning of the fib function
+  R6 holds the number 0xD, the address of the beginning of the 'else' part of the fib function
+  R7 holds the number 0x1 for the comparison 'n<=1'
+
+(0x0)  JMA 2                                          (skips the STP command)
+(0x1)  STP                                            (program end)
+(0x2)  LDA R1 ##MEMORY_LOCATION_OF_n##                (load n into R1)
+(0x3)  LDA R7 ##MEMORY_LOCATION_CONTAINING_0x1##      (load 0x1, number needed for n<=1 comparison, to R7)
+(0x4)  LDA R6 ##MEMORY_LOCATION_CONTAINING_0xD##      (load 0xD, memory location of the 'else' part of the 'fib' function, to R6)
+(0x5)  LDA R5 ##MEMORY_LOCATION_CONTAINING_0x7##      (load 0x7, memory location of the beginning of the 'fib' function, to R5)
+(0x6)  LDA R4 ##MEMORY_LOCATION_CONTAINING_0x2##      (load 0x2, number needed for fib(n-2) call, to R4)
+(0x7)  JC2 R6 R1 R7                                   (jump to 'else' part if n>1)
+(0x8)  MOV R2 R7                                      (make y = 1)
+(0x9)  LDA R7 ##MEMORY_LOCATION_OF_n##                (load master n to R7)
+(0xA)  JC3 R2 R1 R7                                   (if current n = master n, jump to stop)
+(0xB)  MOV R7 R2                                      (set R7 to 0x1 again)
+(0xC)  RTN                                            (return from call)
+(0xD)  PSH R1                                         (beginning of 'else' part; push current n to stack)
+(0xE)  SBO R1 R1                                      (decrease n by 1)
+(0xF)  CLL R5                                         (call fib(n-1), i.e. jump to 0x7 and save the current head)
+(0x10) POP R1                                         (retrieve current n from stack)
+(0x11) MOV R3 R2                                      (make output y = current y, i.e. y = fib(n-1))
+(0x12) PSH R3                                         (push current y onto stack)
+(0x13) PSH R1                                         (push current n onto stack)
+(0x14) SUB R1 R1 R4                                   (decrease n by 2)
+(0x15) CLL R5                                         (call fib(n-2), i.e. jump to 0x7 and save the current head)
+(0x16) POP R1                                         (retrieve current n)
+(0x17) POP R3                                         (retrieve current y)
+(0x18) ADD R2 R2 R3                                   (make output y = output y + current y, i.e. y = y + fib(n-2))
+(0x19) LDA R3 ##MEMORY_LOCATION_OF_n##                (load master n to R3)
+(0x1A) JC3 R7 R1 R3                                   (if current n = master n, jump to stop)
+(0x1B) RTN                                            (if master n hasn't been reached, return from call)
+
+
+Example that can be used with the instruction generator program:
+JMA 2
+STP
+LDA R1 0
+LDA R7 1
+LDA R6 2
+LDA R5 3
+LDA R4 4
+JC2 R6 R1 R7
+MOV R2 R7
+LDA R7 0
+JC3 R2 R1 R7
+MOV R7 R2
+RTN
+PSH R1
+SBO R1 R1
+CLL R5
+POP R1
+MOV R3 R2
+PSH R3
+PSH R1
+SUB R1 R1 R4
+CLL R5
+POP R1
+POP R3
+ADD R2 R2 R3
+LDA R3 0
+JC3 R7 R1 R3
+RTN
+
+Requires setting the following data memory locations:
+Set location '0x0' to value of x.
+Set location '0x1' to value of 0x1 (used for n<=1 comparison).
+Set location '0x2' to value of 0xD (beginning of 'else' part of 'fib' function).
+Set location '0x3' to value of 0x7 (beginning of 'fib' function).
+Set location '0x4' to value of 0x2 (used for fib(n-2) call).

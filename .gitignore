@@ -5,4 +5,3 @@ simulation/*
 greybox_tmp/cbx_args.txt
 *.vwf
 .DS_Store
-instr_gen
