@@ -249,6 +249,15 @@ string getInstructionHex(string instruction){
       binary+="100100";
     }else if(opcode=="RRC"){
       binary+="100101";
+    }else if(opcode=="CLL"){
+      binary+="100110";
+      rs1="R0";
+      rs2="R0";
+    }else if(opcode=="RTN"){
+      binary+="100111";
+      rd="R0";
+      rs1="R0";
+      rs2="R0";
     }else if(opcode=="PSH"){
       binary+="101000";
       rs1=rd;
