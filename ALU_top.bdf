@@ -4,9 +4,9 @@ editor if you plan to continue editing the block that represents it in
 the Block Editor! File corruption is VERY likely to occur.
 */
 /*
-Copyright (C) 2018  Intel Corporation. All rights reserved.
+Copyright (C) 2019  Intel Corporation. All rights reserved.
 Your use of Intel Corporation's design tools, logic functions 
-and other software and tools, and its AMPP partner logic 
+and other software and tools, and any partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
@@ -16,7 +16,8 @@ the Intel FPGA IP License Agreement, or other applicable license
 agreement, including, without limitation, that your use is for
 the sole purpose of programming logic devices manufactured by
 Intel and sold by Intel or its authorized distributors.  Please
-refer to the applicable agreement for further details.
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
 */
 (header "graphic" (version "1.4"))
 (pin
@@ -196,42 +197,6 @@ refer to the applicable agreement for further details.
 	)
 )
 (symbol
-	(rect 544 456 744 552)
-	(text "mul16" (rect 5 0 43 19)(font "Intel Clear" (font_size 8)))
-	(text "MULTIPLIER" (rect 8 75 67 92)(font "Intel Clear" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "CLOCK" (rect 0 0 41 19)(font "Intel Clear" (font_size 8)))
-		(text "CLOCK" (rect 21 27 62 46)(font "Intel Clear" (font_size 8)))
-		(line (pt 0 32)(pt 16 32))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "A[15..0]" (rect 0 0 47 19)(font "Intel Clear" (font_size 8)))
-		(text "A[15..0]" (rect 21 43 68 62)(font "Intel Clear" (font_size 8)))
-		(line (pt 0 48)(pt 16 48)(line_width 3))
-	)
-	(port
-		(pt 0 64)
-		(input)
-		(text "B[15..0]" (rect 0 0 47 19)(font "Intel Clear" (font_size 8)))
-		(text "B[15..0]" (rect 21 59 68 78)(font "Intel Clear" (font_size 8)))
-		(line (pt 0 64)(pt 16 64)(line_width 3))
-	)
-	(port
-		(pt 200 32)
-		(output)
-		(text "PRODUCT[31..0]" (rect 0 0 100 19)(font "Intel Clear" (font_size 8)))
-		(text "PRODUCT[31..0]" (rect 79 27 179 46)(font "Intel Clear" (font_size 8)))
-		(line (pt 200 32)(pt 184 32)(line_width 3))
-	)
-	(drawing
-		(rectangle (rect 16 16 184 80))
-	)
-)
-(symbol
 	(rect 544 216 768 392)
 	(text "alu" (rect 5 0 19 12)(font "Arial" ))
 	(text "ALU_in" (rect 8 160 43 172)(font "Arial" ))
@@ -295,39 +260,75 @@ refer to the applicable agreement for further details.
 		(pt 224 32)
 		(output)
 		(text "mul1[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "mul1[15..0]" (rect 157 27 203 39)(font "Arial" ))
+		(text "mul1[15..0]" (rect 157 27 212 39)(font "Arial" ))
 		(line (pt 224 32)(pt 208 32)(line_width 3))
 	)
 	(port
 		(pt 224 48)
 		(output)
 		(text "mul2[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "mul2[15..0]" (rect 157 43 203 55)(font "Arial" ))
+		(text "mul2[15..0]" (rect 157 43 212 55)(font "Arial" ))
 		(line (pt 224 48)(pt 208 48)(line_width 3))
 	)
 	(port
 		(pt 224 64)
 		(output)
 		(text "Rout[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "Rout[15..0]" (rect 157 59 203 71)(font "Arial" ))
+		(text "Rout[15..0]" (rect 157 59 212 71)(font "Arial" ))
 		(line (pt 224 64)(pt 208 64)(line_width 3))
 	)
 	(port
 		(pt 224 80)
 		(output)
 		(text "jump" (rect 0 0 23 12)(font "Arial" ))
-		(text "jump" (rect 184 75 203 87)(font "Arial" ))
+		(text "jump" (rect 184 75 207 87)(font "Arial" ))
 		(line (pt 224 80)(pt 208 80))
 	)
 	(port
 		(pt 224 96)
 		(output)
 		(text "memaddr[10..0]" (rect 0 0 77 12)(font "Arial" ))
-		(text "memaddr[10..0]" (rect 138 91 203 103)(font "Arial" ))
+		(text "memaddr[10..0]" (rect 138 91 215 103)(font "Arial" ))
 		(line (pt 224 96)(pt 208 96)(line_width 3))
 	)
 	(drawing
 		(rectangle (rect 16 16 208 160))
+	)
+)
+(symbol
+	(rect 544 456 744 552)
+	(text "mul16" (rect 5 0 43 19)(font "Intel Clear" (font_size 8)))
+	(text "MULTIPLIER" (rect 8 75 67 92)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "CLOCK" (rect 0 0 41 19)(font "Intel Clear" (font_size 8)))
+		(text "CLOCK" (rect 21 27 62 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "A[15..0]" (rect 0 0 47 19)(font "Intel Clear" (font_size 8)))
+		(text "A[15..0]" (rect 21 43 68 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 48)(pt 16 48)(line_width 3))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "B[15..0]" (rect 0 0 47 19)(font "Intel Clear" (font_size 8)))
+		(text "B[15..0]" (rect 21 59 68 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
+	)
+	(port
+		(pt 200 32)
+		(output)
+		(text "PRODUCT[31..0]" (rect 0 0 100 19)(font "Intel Clear" (font_size 8)))
+		(text "PRODUCT[31..0]" (rect 79 27 179 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 200 32)(pt 184 32)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 184 80))
 	)
 )
 (connector
