@@ -82,7 +82,7 @@ module DECODE
 	assign RAMi_en = (FETCH & ~STP) | (EXEC1 & ~(LDA | LDR | MUL | MLA | MLS | POP | STP | RTN)) | (EXEC2 & (LDA | LDR | MUL | MLA | MLS | POP | RTN));
 	assign ALU_en = LDA | STA;
 	assign E2 = EXEC1 & (LDA | MUL | MLA | MLS | POP | LDR | RTN);
-	assign stack_en = (EXEC1 & (PSH | CLL)) | ((EXEC1 | EXEC2) & (POP | RTN));
+	assign stack_en = (EXEC1 & (PSH | CLL | RTN | POP));
 	assign stack_rst = STP;
 	assign stack_rw = EXEC1 & (PSH | CLL);
 	assign s5 = EXEC1 & (STR | LDR);
