@@ -1,14 +1,13 @@
-module alu (enable, Rs1, Rs2, Rd, opcode, mulresult, exec2, stackout, memdatain, mul1, mul2, Rout, jump, carry, jumpflags, memaddr);
+module alu (enable, Rs1, Rs2, Rd, instr, mulresult, exec2, stackout, mul1, mul2, Rout, jump, carry, jumpflags, memaddr);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rs1; // input source register 1
 input signed [15:0] Rs2; // input source register 2
 input signed [15:0] Rd; // input destination register
-input [5:0] opcode; // opcode is fed in from instruction using wires outside ALU
+input [15:0] instr; // opcode is fed in from instruction using wires outside ALU
 input signed [31:0] mulresult; // 32-bit result from multiplier
 input exec2; // Input from state machine to indicate when to take in result from multiplication
 input [15:0] stackout; // input from stack to be fed back to registers
-input signed [15:0] memdatain; // input data from RAMd
 
 output reg signed [15:0] mul1; // first number to be multiplied
 output reg signed [15:0] mul2; // second number to be multiplied
@@ -18,6 +17,7 @@ output reg carry; // Internal carry register that is updated during appropriate 
 output [7:0] jumpflags;
 output reg [10:0] memaddr; // address to load data from / store data to RAMd
 
+wire [5:0]opcode = instr[14:9]; //opcode of current instruction
 reg signed [16:0] alusum; // extra bit to hold carry from operations other than Multiply
 assign Rout = alusum [15:0];
 assign jump = (alusum[16] && ((opcode[5:2] == 4'b0000) | (opcode[5:2] == 4'b0001) | (opcode[5:2] == 4'b0010)));
@@ -160,18 +160,19 @@ always @(opcode, mulresult)
 				6'b100011: ;
 				
 				6'b100100: alusum = {1'b0, (Rs1 >> Rs2[3:0]) | (Rs1 << (16 - Rs2[3:0]))}; // ROR Shift Right Loop (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Rs1[15])
-				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
-				6'b100110: ;
-				6'b100111: ;
+//				6'b100101: alusum = ({Rs1, carry} >> (Rs2 % 17)) | ({Rs1, carry} << (17 - (Rs2 % 17)));// RRC Shift Right Loop w/ Carry (Rd = Rs1 shifted right by Rs2, but Rs1[0] -> Carry & Carry -> Rs1[15])
+				6'b100110: alusum = {1'b1, Rd}; //CLL function call
+				6'b100111: begin  //RTN return to prev call
+						if(exec2) begin
+								alusum = {1'b0, stackout}; 
+							end
+					end
 				
 				6'b101000: alusum = {1'b0, Rs1}; // PSH Push value to stack (Stack = Rs1)
 				6'b101001: alusum = {1'b0, stackout}; // POP Pop value from stack (Rd = Stack)
 				6'b101010: begin // LDR Indirect Load (Rd = Mem[Rs1])
 						if(!exec2) begin
 								memaddr = Rs1[10:0];
-							end
-						else begin
-								alusum = {1'b0, memdatain};
 							end
 					end
 				6'b101011: begin // STR Indirect Store (Mem[Rd] = Rs1)
