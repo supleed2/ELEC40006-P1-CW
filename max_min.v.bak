@@ -1,0 +1,11 @@
+module min_max(a, b, minimum, maximum);
+
+input unsigned [7..0] a;
+input unsigned [7..0] b;
+output unsigned [7..0] minimum;
+output unsigned [7..0] maximum;
+
+assign minimum = (a<b) ? a:b;
+assign maximum = (a>b) ? a:b;
+
+endmodule
