@@ -1,4 +1,4 @@
-module alu (enable, Rs1, Rs2, Rd, instr, mulresult, exec2, stackout, mul1, mul2, Rout, jump, carry, jumpflags, memaddr);
+module alu (enable, Rs1, Rs2, Rd, instr, mulresult, exec2, stackout, mul1, mul2, Rout, jump, memaddr);
 
 input enable; // active LOW, disables the ALU during load/store operations so that undefined behaviour does not occur
 input signed [15:0] Rs1; // input source register 1
@@ -13,8 +13,7 @@ output reg signed [15:0] mul1; // first number to be multiplied
 output reg signed [15:0] mul2; // second number to be multiplied
 output signed [15:0] Rout; // value to be saved to destination register
 output jump; // tells decoder whether Jump condition is true
-output reg carry; // Internal carry register that is updated during appropriate opcodes, also provides output for debugging
-output [7:0] jumpflags;
+reg carry; // Internal carry register that is updated during appropriate opcodes, also provides output for debugging
 output reg [10:0] memaddr; // address to load data from / store data to RAMd
 
 wire [5:0]opcode = instr[14:9]; //opcode of current instruction
@@ -33,7 +32,6 @@ assign JC5 = (Rs1 >= Rs2);
 assign JC6 = (Rs1 <= Rs2);
 assign JC7 = (Rs1 != Rs2);
 assign JC8 = (Rs1 < 0);
-assign jumpflags = {JC1, JC2, JC3, JC4, JC5, JC6, JC7, JC8};
 
 always @(opcode, mulresult)
 	begin

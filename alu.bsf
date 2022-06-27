@@ -110,23 +110,9 @@ refer to the applicable agreement for further details.
 	(port
 		(pt 224 96)
 		(output)
-		(text "carry" (rect 0 0 22 12)(font "Arial" ))
-		(text "carry" (rect 181 91 203 103)(font "Arial" ))
-		(line (pt 224 96)(pt 208 96)(line_width 1))
-	)
-	(port
-		(pt 224 112)
-		(output)
-		(text "jumpflags[7..0]" (rect 0 0 57 12)(font "Arial" ))
-		(text "jumpflags[7..0]" (rect 146 107 203 119)(font "Arial" ))
-		(line (pt 224 112)(pt 208 112)(line_width 3))
-	)
-	(port
-		(pt 224 128)
-		(output)
 		(text "memaddr[10..0]" (rect 0 0 62 12)(font "Arial" ))
-		(text "memaddr[10..0]" (rect 141 123 203 135)(font "Arial" ))
-		(line (pt 224 128)(pt 208 128)(line_width 3))
+		(text "memaddr[10..0]" (rect 141 91 203 103)(font "Arial" ))
+		(line (pt 224 96)(pt 208 96)(line_width 3))
 	)
 	(drawing
 		(rectangle (rect 16 16 208 160)(line_width 1))

@@ -110,30 +110,9 @@ refer to the applicable agreement for further details.
 	(port
 		(pt 256 96)
 		(output)
-		(text "CARRY" (rect 0 0 41 19)(font "Intel Clear" (font_size 8)))
-		(text "CARRY" (rect 194 91 235 110)(font "Intel Clear" (font_size 8)))
-		(line (pt 256 96)(pt 240 96))
-	)
-	(port
-		(pt 256 112)
-		(output)
-		(text "jumpflags[7..0]" (rect 0 0 89 19)(font "Intel Clear" (font_size 8)))
-		(text "jumpflags[7..0]" (rect 146 107 235 126)(font "Intel Clear" (font_size 8)))
-		(line (pt 256 112)(pt 240 112)(line_width 3))
-	)
-	(port
-		(pt 256 128)
-		(output)
 		(text "memaddr[10..0]" (rect 0 0 97 19)(font "Intel Clear" (font_size 8)))
-		(text "memaddr[10..0]" (rect 138 123 235 142)(font "Intel Clear" (font_size 8)))
-		(line (pt 256 128)(pt 240 128)(line_width 3))
-	)
-	(port
-		(pt 256 144)
-		(output)
-		(text "MUL_res[31..0]" (rect 0 0 90 19)(font "Intel Clear" (font_size 8)))
-		(text "MUL_res[31..0]" (rect 145 139 235 158)(font "Intel Clear" (font_size 8)))
-		(line (pt 256 144)(pt 240 144)(line_width 3))
+		(text "memaddr[10..0]" (rect 138 91 235 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 256 96)(pt 240 96)(line_width 3))
 	)
 	(drawing
 		(rectangle (rect 16 16 240 176))

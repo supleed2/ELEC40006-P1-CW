@@ -1,4 +1,4 @@
-module LIFOstack (Din, clk, en, rst, rw, Dout, empty, full);
+module LIFOstack (Din, clk, en, rst, rw, Dout);
 
 input [15:0] Din; // Data being fed to stack
 input clk; // clock signal input
@@ -7,8 +7,8 @@ input rst; // reset pin to clear and reinitialise stack (active high)
 input rw; // 0: read, 1: write
 
 output reg [15:0] Dout; // Data being pulled from stack
-output reg empty; // goes high to indicate SP is at 0
-output reg full; // goes high to indicate SP is at (slots)
+reg empty; // goes high to indicate SP is at 0
+reg full; // goes high to indicate SP is at (slots)
 
 reg [5:0] SP; // Points to slot to save next value to
 integer i;
