@@ -1,6 +1,6 @@
 # ELEC40006-P1-CW
 
-## CPUProject Courseowrk for ELEC40006 Electrical Design Project 1
+## CPU Project Coursework for ELEC40006 Electrical Design Project 1
 
 General-purpose, ARM-based CPU designed as part of the Electronics Design Project at Imperial College London. This project was created by:
 
