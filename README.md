@@ -16,7 +16,7 @@ The main goal of this project was to build a general-purpose CPU, capable of per
 
 - [Full project documentation, including design choices, implementation and planning](./docs/Report.pdf)
 - [Video demonstration of the project](./docs/Demo.mp4)
-- [Instruction set documentation](./docs/ISA.pdf)
+- [Instruction set documentation](https://www.youtube.com/watch?v=jOJJTngltEg)
 - [CPU block diagram](./docs/cpuStructure.png)
 - [CPU source files](./src/)
 
